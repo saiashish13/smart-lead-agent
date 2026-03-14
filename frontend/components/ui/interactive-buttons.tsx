@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion"
-import { Rocket, Send, Trash2, Loader2, Sparkles as SparklesIcon, ArrowRight } from "lucide-react"
+import { Rocket, Send, Trash2, Loader2, Sparkles as SparklesIcon, ArrowRight, Zap } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface BaseButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -41,233 +41,73 @@ function useMagnetic(strength = 20) {
     return { x, y, handleMouseMove, handleMouseLeave }
 }
 
-/**
- * Sparkle particle component
- */
-const Sparkle = ({ size, color }: { size: number; color: string }) => {
-    return (
-        <motion.div
-            initial={{ scale: 0, opacity: 0, rotate: 0 }}
-            animate={{ 
-                scale: [0, 1.2, 0], 
-                opacity: [0, 1, 0],
-                rotate: 180,
-                y: [0, -20, -40],
-                x: [0, (Math.random() - 0.5) * 40, (Math.random() - 0.5) * 60]
-            }}
-            transition={{ 
-                duration: 1 + Math.random(), 
-                repeat: Infinity,
-                delay: Math.random() * 2
-            }}
-            style={{
-                position: "absolute",
-                width: size,
-                height: size,
-                backgroundColor: color,
-                borderRadius: "50%",
-                filter: "blur(1px)",
-                boxShadow: `0 0 10px ${color}`
-            }}
-        />
-    )
-}
-
-/**
- * Center Star component
- */
-const CenterStar = () => (
-    <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ 
-            opacity: [0.3, 1, 0.3], 
-            scale: [0.8, 1.2, 0.8],
-            rotate: [0, 90, 180] 
-        }}
-        transition={{ 
-            duration: 1.5, 
-            repeat: Infinity,
-            ease: "easeInOut"
-        }}
-        className="absolute inset-0 flex items-center justify-center pointer-events-none"
-    >
-        <div className="w-1.5 h-1.5 bg-white rounded-full blur-[1px] shadow-[0_0_8px_white]" />
-        <div className="absolute w-4 h-[1px] bg-white/40 blur-[0.5px]" />
-        <div className="absolute h-4 w-[1px] bg-white/40 blur-[0.5px]" />
-    </motion.div>
-)
-
-/**
- * Particle Explosion Component
- */
-const ParticleExplosion = ({ isHovered }: { isHovered: boolean }) => {
-    return (
-        <div className="absolute inset-0 pointer-events-none -z-10">
-            <AnimatePresence>
-                {isHovered && 
-                    [...Array(12)].map((_, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ x: 0, y: 0, scale: 0, opacity: 1 }}
-                            animate={{ 
-                                x: (Math.random() - 0.5) * 150, 
-                                y: (Math.random() - 0.5) * 150,
-                                scale: [0, 1, 0],
-                                opacity: [1, 1, 0]
-                            }}
-                            exit={{ opacity: 0 }}
-                            transition={{ 
-                                duration: 0.8, 
-                                repeat: Infinity, 
-                                repeatDelay: 0.5,
-                                ease: "easeOut" 
-                            }}
-                            className="absolute left-1/2 top-1/2 h-1 w-1 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(59,130,246,0.8)]"
-                        />
-                    ))
-                }
-            </AnimatePresence>
-        </div>
-    )
-}
-
-/**
- * Pulsing Ripple Rings
- */
-const RippleRings = () => (
-    <div className="absolute inset-0 flex items-center justify-center pointer-events-none -z-10">
-        {[...Array(3)].map((_, i) => (
-            <motion.div
-                key={i}
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ 
-                    scale: [0.8, 2], 
-                    opacity: [0.3, 0] 
-                }}
-                transition={{ 
-                    duration: 2, 
-                    repeat: Infinity, 
-                    delay: i * 0.6,
-                    ease: "easeOut"
-                }}
-                className="absolute w-full h-full rounded-xl border border-blue-400/30"
-            />
-        ))}
-    </div>
-)
 
 export const DeployButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
     ({ className, isLoading, icon: customIcon, size = "default", children, ...props }, ref) => {
-        const { x, y, handleMouseMove, handleMouseLeave } = useMagnetic(15)
         const [isHovered, setIsHovered] = React.useState(false)
-        const [hasMounted, setHasMounted] = React.useState(false)
-
-        React.useEffect(() => {
-            setHasMounted(true)
-        }, [])
 
         return (
-            <motion.div
-                style={{ x, y }}
-                onMouseMove={(e) => {
-                    handleMouseMove(e)
-                    setIsHovered(true)
-                }}
-                onMouseLeave={() => {
-                    handleMouseLeave()
-                    setIsHovered(false)
-                }}
-                className="relative inline-block"
-            >
-                {/* Advanced Pulsing Ripples */}
-                {isHovered && <RippleRings />}
-
-                {/* Particle Explosion */}
-                <ParticleExplosion isHovered={isHovered} />
-
-                {/* Glowing Aura Gradient behind button */}
-                <AnimatePresence>
-                    {isHovered && (
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 0.7, scale: 1.3 }}
-                            exit={{ opacity: 0, scale: 0.8 }}
-                            transition={{ duration: 0.5 }}
-                            className="absolute inset-0 -z-20 bg-gradient-to-r from-blue-500/50 via-purple-500/50 to-pink-500/50 blur-3xl rounded-full"
-                        />
-                    )}
-                </AnimatePresence>
-
-                {/* Sparkles around button */}
-                {isHovered && hasMounted && (
-                    <div className="absolute inset-0 pointer-events-none -z-10">
-                        {[...Array(6)].map((_, i) => (
-                            <div key={i} style={{ 
-                                position: "absolute", 
-                                left: `${Math.random() * 100}%`, 
-                                top: `${Math.random() * 100}%` 
-                            }}>
-                                <Sparkle size={Math.random() * 4 + 2} color={i % 2 === 0 ? "#60a5fa" : "#c084fc"} />
-                            </div>
-                        ))}
-                    </div>
-                )}
+            <div className="relative w-full group">
+                {/* Subtle Ambient Glow */}
+                <div className={cn(
+                    "absolute -inset-0.5 rounded-xl bg-gradient-to-r from-primary/50 to-primary-foreground/50 opacity-0 blur transition-all duration-500",
+                    isHovered && "opacity-20 blur-xl"
+                )} />
 
                 <motion.button
                     ref={ref}
-                    whileHover={{ scale: 1.05 }}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    whileHover={{ scale: 0.995 }}
                     whileTap={{ scale: 0.98 }}
                     className={cn(
-                        "relative overflow-hidden group flex items-center justify-center gap-2 rounded-xl font-bold text-white transition-all duration-500",
-                        // Rainbow Gradient Animation
-                        "bg-gradient-to-r from-blue-600 via-purple-600 via-pink-600 to-indigo-600 bg-[length:400%_auto] animate-gradient-x shadow-2xl shadow-blue-500/40",
-                        "border border-white/20 backdrop-blur-md",
-                        size === "sm" ? "px-4 py-2 text-sm" : size === "lg" ? "px-8 py-4 text-xl" : "px-6 py-3 text-lg",
+                        "relative w-full flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-semibold transition-all duration-500 overflow-hidden shadow-lg",
+                        "bg-primary text-primary-foreground",
+                        "border border-primary-foreground/10",
+                        isLoading && "cursor-not-allowed opacity-80",
                         className
                     )}
                     {...(props as any)}
                 >
-                    <div className="absolute inset-0 rounded-xl border border-white/40 group-hover:animate-pulse-glow" />
-                    <div className="absolute inset-0 -translate-x-full group-hover:animate-shine bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12" />
+                    {/* Breathing/Pulse Effect */}
+                    <div className="absolute inset-0 bg-white/5 animate-pulse opacity-0 group-hover:opacity-100 transition-opacity" />
+                    
+                    {/* Glass Shine Sweep */}
+                    <div className="absolute inset-0 -translate-x-full group-hover:animate-shine bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12" />
 
                     <AnimatePresence mode="wait">
                         {isLoading ? (
                             <motion.div
                                 key="loading"
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.8 }}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
                                 className="flex items-center gap-2"
                             >
                                 <Loader2 className="h-5 w-5 animate-spin" />
-                                <span>Deploying Agent...</span>
+                                <span className="uppercase tracking-widest text-xs font-bold">Initializing Agent...</span>
                             </motion.div>
                         ) : (
                             <motion.div
                                 key="content"
-                                initial={{ opacity: 0, y: 10 }}
+                                initial={{ opacity: 0, y: 5 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -10 }}
-                                className="flex items-center gap-3 relative z-10"
+                                exit={{ opacity: 0, y: -5 }}
+                                className="flex items-center gap-2 relative z-10"
                             >
-                                <motion.div
-                                    animate={{ 
-                                        x: isHovered ? [0, 5, 0] : 0,
-                                        rotate: isHovered ? [0, -10, 10, 0] : 0
-                                    }}
-                                    transition={{ repeat: Infinity, duration: 2 }}
-                                >
-                                    <ArrowRight className="h-6 w-6 group-hover:text-amber-200 transition-colors drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
-                                </motion.div>
-                                <span className="tracking-widest uppercase text-[0.85rem] font-black drop-shadow-md">
+                                <Zap className="h-5 w-5 fill-current" />
+                                <span className="uppercase tracking-widest text-sm font-bold">
                                     {children || "Deploy Fresh Packet Agent"}
                                 </span>
-                                <SparklesIcon className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity animate-pulse text-yellow-200" />
+                                <ArrowRight className={cn(
+                                    "h-4 w-4 transition-transform duration-300",
+                                    isHovered ? "translate-x-1" : ""
+                                )} />
                             </motion.div>
                         )}
                     </AnimatePresence>
                 </motion.button>
-            </motion.div>
+            </div>
         )
     }
 )
@@ -323,80 +163,46 @@ SendButton.displayName = "SendButton"
 
 export const ClearButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
     ({ className, size = "default", isLoading, icon: customIcon, children, ...props }, ref) => {
-        const { x, y, handleMouseMove, handleMouseLeave } = useMagnetic(10)
         const [isHovered, setIsHovered] = React.useState(false)
-        const [isClicked, setIsClicked] = React.useState(false)
 
         return (
-            <motion.div
-                style={{ x, y }}
-                onMouseMove={(e) => {
-                    handleMouseMove(e)
-                    setIsHovered(true)
-                }}
-                onMouseLeave={() => {
-                    handleMouseLeave()
-                    setIsHovered(false)
-                }}
-                className="relative inline-block"
-            >
+            <div className="relative inline-block group">
+                {/* Subtle Ambient Glow */}
+                <div className={cn(
+                    "absolute -inset-0.5 rounded-xl bg-gradient-to-r from-destructive/50 to-destructive/20 opacity-0 blur transition-all duration-500",
+                    isHovered && "opacity-20 blur-xl"
+                )} />
+
                 <motion.button
                     ref={ref}
-                    whileHover={{ 
-                        scale: 1.05,
-                    }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={(e) => {
-                        setIsClicked(true)
-                        setTimeout(() => setIsClicked(false), 600)
-                        props.onClick?.(e as any)
-                    }}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    whileHover={{ scale: 0.995 }}
+                    whileTap={{ scale: 0.98 }}
                     className={cn(
-                        "relative group flex items-center justify-center gap-2 rounded-xl font-bold text-white transition-all duration-500 shadow-xl overflow-hidden",
-                        "bg-gradient-to-br from-rose-500 to-orange-600 hover:shadow-rose-500/50",
-                        "border border-white/10 backdrop-blur-sm",
-                        size === "sm" ? "px-3 py-1.5 text-[0.7rem] uppercase tracking-wider" : size === "lg" ? "px-8 py-4 text-xl" : "px-6 py-3 text-lg",
+                        "relative flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-500 overflow-hidden shadow-lg",
+                        "bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground",
+                        "border border-destructive/20",
+                        size === "sm" ? "px-4 py-2 text-xs" : size === "lg" ? "px-8 py-4 text-lg" : "px-6 py-3 text-sm",
                         className
                     )}
                     {...(props as any)}
                 >
-                    {/* Shine/Sweep Effect */}
-                    <div className="absolute inset-0 -translate-x-full group-hover:animate-shine bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-
-                    {/* Outer Glow on Hover */}
-                    <div className="absolute inset-0 rounded-xl border border-white/20 group-hover:border-white/40 group-hover:shadow-[0_0_20px_rgba(244,63,94,0.4)] transition-all duration-500" />
-
-                    {/* Center Twinkle Star */}
-                    <AnimatePresence>
-                        {isHovered && <CenterStar />}
-                    </AnimatePresence>
-
-                    {/* Click Ripple Effect */}
-                    <AnimatePresence>
-                        {isClicked && (
-                            <motion.div
-                                initial={{ scale: 0, opacity: 0.6 }}
-                                animate={{ scale: 3, opacity: 0 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                                className="absolute inset-0 bg-white rounded-full pointer-events-none"
-                            />
-                        )}
-                    </AnimatePresence>
-
-                    <motion.div
-                        animate={{ 
-                            x: isHovered ? [0, -1, 1, -1, 1, 0] : 0,
-                        }}
-                        transition={{ repeat: Infinity, duration: 0.3 }}
-                        className="relative z-10 flex items-center gap-2"
-                    >
-                        <Trash2 className="h-5 w-5 group-hover:rotate-12 transition-transform" />
-                    </motion.div>
+                    {/* Breathing/Pulse Effect */}
+                    <div className="absolute inset-0 bg-white/5 animate-pulse opacity-0 group-hover:opacity-100 transition-opacity" />
                     
-                    <span className="relative z-10">{children || "Clear All"}</span>
+                    {/* Glass Shine Sweep */}
+                    <div className="absolute inset-0 -translate-x-full group-hover:animate-shine bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12" />
+
+                    <div className="relative z-10 flex items-center gap-2">
+                        <Trash2 className={cn(
+                            "h-4 w-4 transition-transform duration-300",
+                            isHovered ? "rotate-12" : ""
+                        )} />
+                        <span>{children || "Clear All"}</span>
+                    </div>
                 </motion.button>
-            </motion.div>
+            </div>
         )
     }
 )

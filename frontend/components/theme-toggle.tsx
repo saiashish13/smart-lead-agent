@@ -86,30 +86,6 @@ export function ThemeToggle() {
                         </motion.div>
                     )}
                 </AnimatePresence>
-
-                {/* Micro-stars for dark mode */}
-                {isDark && (
-                    <div className="absolute inset-0 pointer-events-none">
-                        {[...Array(3)].map((_, i) => (
-                            <motion.div
-                                key={i}
-                                className="absolute h-0.5 w-0.5 bg-white rounded-full"
-                                initial={{ opacity: 0, scale: 0 }}
-                                animate={{ 
-                                    opacity: [0, 1, 0],
-                                    scale: [0, 1, 0],
-                                    x: (i - 1) * 8 + (Math.random() - 0.5) * 4,
-                                    y: (Math.random() - 0.5) * 12
-                                }}
-                                transition={{
-                                    duration: 1 + Math.random(),
-                                    repeat: Infinity,
-                                    delay: Math.random()
-                                }}
-                            />
-                        ))}
-                    </div>
-                )}
             </motion.div>
 
             {/* Static background icons */}

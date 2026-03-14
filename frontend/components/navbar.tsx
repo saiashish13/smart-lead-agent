@@ -72,23 +72,8 @@ function NavLink({ route, isActive }: { route: any; isActive: boolean }) {
                     <route.icon className={cn(
                         "h-4 w-4 transition-all duration-300",
                         (isActive || isHovered) ? route.color : "text-muted-foreground",
-                        isHovered && "scale-110 rotate-3"
+                        isHovered && "scale-110"
                     )} />
-                    
-                    {/* Icon Glow */}
-                    <AnimatePresence>
-                        {(isActive || isHovered) && (
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.5 }}
-                                animate={{ opacity: 1, scale: 1.5 }}
-                                exit={{ opacity: 0 }}
-                                className={cn(
-                                    "absolute inset-0 blur-md rounded-full -z-10",
-                                    route.color.replace('text-', 'bg-').replace('400', '500/30')
-                                )}
-                            />
-                        )}
-                    </AnimatePresence>
                 </div>
                 
                 <span className="text-sm font-medium tracking-wide">
@@ -110,26 +95,16 @@ function NavLink({ route, isActive }: { route: any; isActive: boolean }) {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.95 }}
                         className={cn(
-                            "absolute inset-0 rounded-xl border -z-10",
-                            isActive ? "bg-white/5 border-white/10" : "bg-white/5 border-white/5",
-                            isActive && "shadow-[0_0_15px_rgba(255,255,255,0.05)]"
+                            "absolute inset-0 rounded-xl border -z-10 transition-colors duration-300",
+                            isActive 
+                                ? "bg-primary/5 border-primary/10 dark:bg-primary/10 dark:border-primary/20" 
+                                : "bg-muted/50 border-transparent",
+                            isActive && "shadow-sm"
                         )}
                     />
                 )}
             </AnimatePresence>
 
-            {/* Energy Bar Underline */}
-            <motion.div
-                initial={{ width: 0, opacity: 0 }}
-                animate={{ 
-                    width: isHovered || isActive ? "60%" : "0%",
-                    opacity: isHovered || isActive ? 1 : 0
-                }}
-                className={cn(
-                    "absolute bottom-0 left-[20%] h-[2px] rounded-full blur-[0.5px]",
-                    isActive ? route.color.replace('text-', 'bg-') : "bg-white/40"
-                )}
-            />
         </Link>
     )
 }
@@ -139,8 +114,8 @@ export function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 flex items-center p-4 h-20">
-            <div className="flex items-center w-full max-w-7xl mx-auto justify-between px-6 h-full bg-white/5 dark:bg-black/40 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]">
+        <nav className="fixed top-0 left-0 right-0 z-50 flex items-center p-4 h-20 transition-all duration-500">
+            <div className="flex items-center w-full max-w-7xl mx-auto justify-between px-6 h-full bg-background/60 dark:bg-background/40 backdrop-blur-xl border border-border rounded-3xl shadow-sm">
                 <div className="flex items-center gap-8">
                     <Link href="/" className="flex items-center gap-3 group">
                         <motion.div 
@@ -149,13 +124,13 @@ export function Navbar() {
                         >
                             <Zap className="text-white h-5 w-5 fill-white" />
                         </motion.div>
-                        <h1 className="text-xl font-black tracking-tighter hidden md:block bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent group-hover:to-blue-400 transition-all duration-500">
-                            LEAD AGENT
+                        <h1 className="text-lg font-bold tracking-tight hidden md:block text-foreground group-hover:text-primary transition-all duration-500 uppercase">
+                            Lead Agent
                         </h1>
                     </Link>
                     
                     {/* Desktop Navigation */}
-                    <div className="hidden md:flex items-center gap-x-1 p-1.5 rounded-2xl bg-black/20 border border-white/5 backdrop-blur-xl">
+                    <div className="hidden md:flex items-center gap-x-1 p-1.5 rounded-2xl bg-muted/30 border border-border/50 backdrop-blur-xl">
                         {routes.map((route) => (
                             <NavLink 
                                 key={route.href} 
