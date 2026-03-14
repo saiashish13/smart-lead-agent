@@ -11,10 +11,10 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { SendButton, ClearButton } from "@/components/ui/interactive-buttons"
-import { Trash2, Send } from "lucide-react"
+import { Users, Loader2, Link2, SearchX, Trash2 } from "lucide-react"
 import { useState } from "react"
 
 export default function LeadsPage() {
@@ -63,105 +63,137 @@ export default function LeadsPage() {
     })
 
     if (isLoading) {
-        return <div className="p-8 text-zinc-400">Loading leads...</div>
+        return (
+            <div className="p-10 flex items-center justify-center min-h-[50vh]">
+                <div className="flex flex-col items-center gap-4 text-muted-foreground">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                    <span>Loading leads...</span>
+                </div>
+            </div>
+        )
     }
 
     if (isError) {
-        return <div className="p-8 text-red-400">Error loading leads.</div>
+        return <div className="p-10 text-destructive text-center mt-24">Error loading leads. Please try again.</div>
     }
 
     return (
-        <div className="p-8 space-y-8">
-            <div className="flex justify-between items-center">
-                <div>
-                    <h2 className="text-3xl font-bold tracking-tight">Leads</h2>
-                    <p className="text-zinc-400">Manage and track your discovered leads.</p>
+        <div className="p-6 md:p-8 space-y-8 max-w-[1200px] mx-auto pt-24">
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
+                        <Users className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                        <h2 className="text-2xl font-bold tracking-tight text-foreground">Pipeline</h2>
+                        <p className="text-sm text-muted-foreground mt-0.5">Manage and act on your discovered prospects.</p>
+                    </div>
                 </div>
-                <ClearButton
-                    onClick={() => clearAllLeads()}
-                >
-                    Clear All
-                </ClearButton>
+                {leads && leads.length > 0 && (
+                    <ClearButton onClick={() => clearAllLeads()}>
+                        Clear All
+                    </ClearButton>
+                )}
             </div>
 
-            <Card className="bg-zinc-900 border-zinc-800">
-                <CardHeader>
-                    <CardTitle>All Leads</CardTitle>
-                    <CardDescription>A list of all leads discovered by the agent.</CardDescription>
+            {/* Table Card */}
+            <Card className="border-border/50 shadow-sm overflow-hidden">
+                <CardHeader className="bg-muted/30 border-b border-border/40 py-4 flex flex-row items-center justify-between">
+                    <div>
+                        <CardTitle className="text-base text-foreground">Matched Leads</CardTitle>
+                        <CardDescription>{leads?.length || 0} results total</CardDescription>
+                    </div>
                 </CardHeader>
-                <CardContent>
-                    <Table>
+                
+                {/* Data Table */}
+                <div className="overflow-x-auto pb-2">
+                    <Table className="w-full">
                         <TableHeader>
-                            <TableRow className="border-zinc-800 hover:bg-transparent">
-                                <TableHead className="w-[200px] text-zinc-400">Name</TableHead>
-                                <TableHead className="text-zinc-400">Company</TableHead>
-                                <TableHead className="text-zinc-400">Status</TableHead>
-                                <TableHead className="text-zinc-400">Research</TableHead>
-                                <TableHead className="text-zinc-400">Requested</TableHead>
-                                <TableHead className="text-right text-zinc-400">Delete</TableHead>
+                            <TableRow className="border-border/40 hover:bg-transparent bg-transparent">
+                                <TableHead className="w-[300px] font-medium text-foreground py-3 pl-6">Prospect Info</TableHead>
+                                <TableHead className="font-medium text-foreground">Company</TableHead>
+                                <TableHead className="font-medium text-foreground">Status</TableHead>
+                                <TableHead className="font-medium text-foreground">Profile</TableHead>
+                                <TableHead className="text-right font-medium text-foreground pr-6">Action</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {(!leads || leads.length === 0) && (
                                 <TableRow>
-                                    <TableCell colSpan={6} className="text-center h-24 text-zinc-500">
-                                        No leads found. Start a discovery campaign!
+                                    <TableCell colSpan={5} className="text-center h-48 text-muted-foreground border-0 hover:bg-transparent">
+                                        <div className="flex flex-col items-center justify-center gap-3">
+                                            <SearchX className="h-8 w-8 text-muted-foreground/30" />
+                                            <span>Pipeline is empty</span>
+                                            <a href="/discovery" className="text-sm text-primary hover:underline mt-1">Run a discovery search</a>
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             )}
                             {leads?.map((lead: any) => (
-                                <TableRow key={lead.id} className="border-zinc-800 hover:bg-zinc-800/50">
-                                    <TableCell className="font-medium text-zinc-200">
-                                        <div>{lead.name}</div>
-                                        <div className="text-xs text-zinc-500">{lead.email}</div>
+                                <TableRow key={lead.id} className="border-border/40 hover:bg-muted/30 transition-colors">
+                                    <TableCell className="pl-6 py-4">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-9 h-9 rounded-full bg-indigo-900/30 text-indigo-400 shadow-inner flex items-center justify-center text-sm font-semibold shrink-0">
+                                                {(lead.name || "U")[0]}
+                                            </div>
+                                            <div className="min-w-0">
+                                                <div className="font-medium text-foreground text-sm truncate">{lead.name}</div>
+                                                <div className="text-xs text-muted-foreground truncate">{lead.email}</div>
+                                            </div>
+                                        </div>
                                     </TableCell>
-                                    <TableCell className="text-zinc-300">
-                                        {lead.company}
-                                        <div className="text-xs text-zinc-500">{lead.industry}</div>
+                                    <TableCell className="py-4 text-sm">
+                                        <div className="font-medium text-foreground truncate">{lead.company}</div>
+                                        {lead.industry && <div className="text-xs text-muted-foreground truncate mt-0.5">{lead.industry}</div>}
                                     </TableCell>
-                                    <TableCell>
-                                        <Badge variant="outline" className={`
-                        ${lead.status === 'processed' ? 'border-emerald-500/50 text-emerald-400' :
-                                                lead.status === 'error' ? 'border-red-500/50 text-red-400' :
-                                                    'border-blue-500/50 text-blue-400'}
-                      `}>
-                                            {lead.status}
+                                    <TableCell className="py-4">
+                                        <Badge variant="secondary" className={`text-[10px] sm:text-xs font-medium px-2 py-0.5 pointer-events-none border ${
+                                            lead.status === 'processed' ? 'bg-emerald-900/30 text-emerald-400 border-emerald-500/20' :
+                                            lead.status === 'error' ? 'bg-red-900/30 text-red-400 border-red-500/20' :
+                                            'bg-blue-900/30 text-blue-400 border-blue-500/20'
+                                        }`}>
+                                            {lead.status || 'new'}
                                         </Badge>
                                     </TableCell>
-                                    <TableCell>
-                                        <Badge variant="outline" className="border-zinc-700 text-zinc-400">
-                                            {lead.source_url ? <a href={lead.source_url} target="_blank" className="hover:text-blue-400 underline">Profile</a> : "No Link"}
-                                        </Badge>
-                                    </TableCell>
-                                    <TableCell>
-                                        {lead.status === 'processed' ? (
-                                            <span className="text-emerald-400 text-sm">Sent</span>
+                                    <TableCell className="py-4">
+                                        {lead.source_url ? (
+                                            <a href={lead.source_url} target="_blank" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors">
+                                                <Link2 className="h-3.5 w-3.5" />
+                                                View
+                                            </a>
                                         ) : (
-                                            <SendButton
-                                                onClick={() => sendEmail(lead.id)}
-                                                disabled={sendingId === lead.id}
-                                                isLoading={sendingId === lead.id}
-                                                size="sm"
-                                            >
-                                                Send
-                                            </SendButton>
+                                            <span className="text-xs text-muted-foreground/50">—</span>
                                         )}
                                     </TableCell>
-                                    <TableCell className="text-right">
-                                        <Button
-                                            onClick={() => deleteLead(lead.id)}
-                                            variant="ghost"
-                                            size="sm"
-                                            className="text-red-400 hover:text-red-300 hover:bg-red-950/30"
-                                        >
-                                            <Trash2 className="h-4 w-4" />
-                                        </Button>
+                                    <TableCell className="text-right pr-6 py-4">
+                                        <div className="flex items-center justify-end gap-2">
+                                            {lead.status !== 'processed' && (
+                                                <SendButton
+                                                    onClick={() => sendEmail(lead.id)}
+                                                    disabled={sendingId === lead.id}
+                                                    isLoading={sendingId === lead.id}
+                                                    size="sm"
+                                                >
+                                                    Send
+                                                </SendButton>
+                                            )}
+                                            <Button
+                                                onClick={() => deleteLead(lead.id)}
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                                            >
+                                                <span className="sr-only">Delete</span>
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
-                </CardContent>
+                </div>
             </Card>
         </div>
     )

@@ -96,9 +96,9 @@ export default function DashboardPage() {
       </div>
 
       {/* Bottom Row: Recent Activity + Recent Sent */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        {/* Recent Activity */}
-        <div className="col-span-4">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mb-8">
+        {/* Recent Leads */}
+        <div className="lg:col-span-1 md:col-span-2 col-span-1 h-full min-h-[400px]">
           <Card className="bg-card border-border h-[400px] flex flex-col shadow-sm">
             <CardHeader className="py-3 px-4 border-b border-border">
               <CardTitle className="text-sm font-semibold text-foreground">Recent Activity</CardTitle>
@@ -112,7 +112,7 @@ export default function DashboardPage() {
                 )}
                 {recentLeads.map((lead: any) => (
                   <div key={lead.id} className="px-4 py-3 hover:bg-muted/50 transition-colors">
-                    <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center justify-between gap-2 min-w-[280px]">
                       <div className="min-w-0">
                         <p className="text-sm font-medium text-foreground truncate">{lead.name || "Unknown"}</p>
                         <p className="text-xs text-muted-foreground truncate">{lead.company} {lead.industry ? `· ${lead.industry}` : ""}</p>
@@ -141,7 +141,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Recent Sent */}
-        <div className="col-span-3">
+        <div className="lg:col-span-3 md:col-span-2 col-span-1">
           <RecentSent />
         </div>
       </div>

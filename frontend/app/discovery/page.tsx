@@ -4,10 +4,9 @@ import { useState } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import api from "@/lib/api"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
 import { DeployButton } from "@/components/ui/interactive-buttons"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Search, Loader2, Sparkles, Target, RefreshCw } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Search, MapPin, Building2, CheckCircle2, User, Sparkles } from "lucide-react"
 
 export default function DiscoveryPage() {
     const [query, setQuery] = useState("")
@@ -38,121 +37,112 @@ export default function DiscoveryPage() {
     }
 
     return (
-        <div className="p-8 space-y-8 flex flex-col items-center justify-center min-h-[80vh]">
-            <div className="text-center space-y-2">
-                <h2 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-                    Lead Discovery
+        <div className="p-6 md:p-8 space-y-10 flex flex-col items-center justify-center min-h-screen pt-24 pb-20">
+            {/* Elegant Header */}
+            <div className="text-center space-y-5 max-w-2xl mb-4">
+                <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow-lg">
+                    Discovery Engine
                 </h2>
-                <p className="text-muted-foreground text-lg">
-                    Deploy autonomous agents to find fresh, unique leads every run.
+                <p className="text-muted-foreground text-lg leading-relaxed max-w-xl mx-auto">
+                    Program your agent to securely crawl, identify, and extract correctly-matched prospects.
                 </p>
             </div>
 
-            <Card className="w-full max-w-2xl bg-card border-border backdrop-blur-sm shadow-xl">
-                <CardContent className="p-6">
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        {/* Row 1: Product + Target Person */}
-                        <div className="flex gap-4">
-                            <div className="flex-1 space-y-2">
-                                <label className="text-sm font-medium text-muted-foreground">Software Product Name</label>
+            {/* Clean Form Card */}
+            <Card className="w-full max-w-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-visible">
+                <div className="absolute top-0 left-0 right-0 h-1.5 rounded-t-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 opacity-80" />
+                <CardContent className="p-8 md:p-12 pt-12">
+                    <form onSubmit={handleSubmit} className="space-y-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-3">
+                                <label className="text-sm font-semibold text-white flex items-center gap-2 tracking-wide">
+                                    <Sparkles className="h-4 w-4 text-cyan-400 drop-shadow-md" />
+                                    Software Product
+                                </label>
                                 <Input
-                                    placeholder="e.g. Streamlit, LangChain, Vercel"
-                                    className="bg-background border-border focus-visible:ring-primary text-foreground placeholder:text-muted-foreground/50"
+                                    placeholder="e.g. Streamlit, Next.js, Stripe"
                                     value={productName}
                                     onChange={(e) => setProductName(e.target.value)}
+                                    className="h-12 shadow-inner bg-black/20 border-white/10 focus-visible:ring-cyan-500 text-white"
                                 />
                             </div>
-                            <div className="flex-1 space-y-2">
-                                <label className="text-sm font-medium text-muted-foreground">Target Person / Persona</label>
-                                <div className="relative">
-                                    <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                    <Input
-                                        placeholder="e.g. Data Scientist, CTO in Fintech"
-                                        className="pl-10 bg-background border-border focus-visible:ring-primary text-foreground placeholder:text-muted-foreground/50"
-                                        value={query}
-                                        onChange={(e) => setQuery(e.target.value)}
-                                    />
-                                </div>
+                            <div className="space-y-3">
+                                <label className="text-sm font-semibold text-white flex items-center gap-2 tracking-wide">
+                                    <User className="h-4 w-4 text-indigo-400 drop-shadow-md" />
+                                    Target Persona
+                                </label>
+                                <Input
+                                    placeholder="e.g. Data Scientist, VP of Sales"
+                                    value={query}
+                                    onChange={(e) => setQuery(e.target.value)}
+                                    className="h-12 shadow-inner bg-black/20 border-white/10 focus-visible:ring-indigo-500 text-white"
+                                />
                             </div>
                         </div>
 
-                        {/* Row 2: Industry + Location */}
-                        <div className="flex gap-4">
-                            <div className="flex-1 space-y-2">
-                                <label className="text-sm font-medium text-muted-foreground flex items-center gap-1.5">
-                                    <Target className="h-3.5 w-3.5 text-purple-400" />
-                                    Industry
-                                    <span className="text-muted-foreground/60 font-normal">(optional)</span>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-3">
+                                <label className="text-sm font-semibold flex items-center gap-2 text-white tracking-wide">
+                                    <Building2 className="h-4 w-4 text-muted-foreground" />
+                                    Industry <span className="text-[11px] text-muted-foreground font-normal uppercase tracking-wider">(Optional)</span>
                                 </label>
                                 <Input
-                                    placeholder="e.g. Fintech, Healthcare, SaaS"
-                                    className="bg-background border-border focus-visible:ring-primary text-foreground placeholder:text-muted-foreground/50"
+                                    placeholder="e.g. Fintech, Healthcare"
                                     value={industry}
                                     onChange={(e) => setIndustry(e.target.value)}
+                                    className="h-12 shadow-inner bg-black/20 border-white/10 focus-visible:ring-blue-500 text-white"
                                 />
                             </div>
-                            <div className="flex-1 space-y-2">
-                                <label className="text-sm font-medium text-muted-foreground flex items-center gap-1.5">
-                                    Location
-                                    <span className="text-muted-foreground/60 font-normal">(optional)</span>
+                            <div className="space-y-3">
+                                <label className="text-sm font-semibold flex items-center gap-2 text-white tracking-wide">
+                                    <MapPin className="h-4 w-4 text-muted-foreground" />
+                                    Location <span className="text-[11px] text-muted-foreground font-normal uppercase tracking-wider">(Optional)</span>
                                 </label>
                                 <Input
-                                    placeholder="e.g. San Francisco, US remote, London"
-                                    className="bg-background border-border focus-visible:ring-primary text-foreground placeholder:text-muted-foreground/50"
+                                    placeholder="e.g. San Francisco, London"
                                     value={location}
                                     onChange={(e) => setLocation(e.target.value)}
+                                    className="h-12 shadow-inner bg-black/20 border-white/10 focus-visible:ring-blue-500 text-white"
                                 />
                             </div>
                         </div>
 
-
-
-                        <DeployButton
-                            type="submit"
-                            className="w-full text-lg"
-                            isLoading={isPending}
-                            disabled={isPending || !query.trim() || !productName.trim()}
-                        >
-                            Deploy Fresh Packet Agent
-                        </DeployButton>
+                        <div className="pt-4">
+                            <DeployButton
+                                type="submit"
+                                isLoading={isPending}
+                                disabled={isPending || !query.trim() || !productName.trim()}
+                                className="w-full text-base font-semibold tracking-wide"
+                            >
+                                Run Discovery
+                            </DeployButton>
+                        </div>
                     </form>
                 </CardContent>
             </Card>
 
+            {/* Clean Results Card */}
             {searchResults && (
-                <div className="w-full max-w-2xl mt-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                    <Card className="bg-card border-border overflow-hidden relative shadow-lg">
-                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-cyan-500"></div>
-                        <CardHeader>
-                            <CardTitle className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
-                                Fresh Packet Complete
-                            </CardTitle>
-                            <div className="flex flex-wrap gap-2 mt-3">
-                                {/* Product */}
-                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground border border-border">
-                                    Product: {productName}
-                                </span>
-                                {/* Niche/Location/Industry (optional if backend includes it, left out for cleanliness unless provided) */}
-                                {(searchResults.industry || industry) && (
-                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-700/50">
-                                        <Target className="h-3 w-3 mr-1" />
-                                        Industry: {searchResults.industry || industry}
-                                    </span>
-                                )}
-                                {/* Persona */}
-                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground border border-border">
-                                    Persona: {query}
-                                </span>
+                <div className="w-full max-w-3xl animate-in zoom-in-95 fade-in duration-500 ease-out mt-8">
+                    <Card className="border-emerald-500/50 shadow-[0_0_30px_rgba(16,185,129,0.15)] bg-emerald-950/40 relative overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent pointer-events-none" />
+                        <CardContent className="p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+                            <div className="flex items-center gap-5">
+                                <div className="h-14 w-14 rounded-full bg-emerald-900/60 shadow-[inset_0_2px_10px_rgba(255,255,255,0.1)] flex items-center justify-center shrink-0 border border-emerald-500/30">
+                                    <CheckCircle2 className="h-7 w-7 text-emerald-400 drop-shadow-md" />
+                                </div>
+                                <div className="space-y-1.5">
+                                    <h3 className="text-xl font-bold text-white text-glow">
+                                        Discovery Complete
+                                    </h3>
+                                    <p className="text-[15px] text-emerald-100/70">
+                                        Identified <span className="text-white font-bold">{searchResults.leads_found}</span> target profiles mapping to "{query}".
+                                    </p>
+                                </div>
                             </div>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-sm text-muted-foreground p-4 bg-muted/30 rounded-lg border border-border">
-                                <span className="text-emerald-600 dark:text-emerald-400 font-bold">{searchResults.leads_found}</span> new leads identified and added to your pipeline.
-                                <br />
-                                <a href="/leads" className="inline-flex items-center mt-3 text-emerald-600 dark:text-emerald-400 hover:underline font-medium transition-colors">
-                                    View Leads Dashboard <span className="ml-1">→</span>
-                                </a>
-                            </div>
+                            <a href="/leads" className="inline-flex items-center justify-center px-6 py-2.5 rounded-lg bg-foreground text-background font-medium text-sm hover:opacity-90 transition-opacity whitespace-nowrap">
+                                View Pipeline
+                            </a>
                         </CardContent>
                     </Card>
                 </div>

@@ -1,27 +1,25 @@
 "use client"
 
 import React from "react"
-import { cn } from "@/lib/utils"
 
 export const FuturisticBackground = () => {
     return (
-        <div className="fixed inset-0 -z-50 overflow-hidden bg-background transition-colors duration-500">
-            {/* Professional Gradient Layer */}
-            <div className={cn(
-                "absolute inset-0 opacity-40 dark:opacity-60",
-                "bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))]",
-                "from-blue-100/20 via-transparent to-transparent dark:from-blue-900/20"
-            )} />
+        <div className="fixed inset-0 -z-50 overflow-hidden bg-[#0A0F1C] transition-colors duration-500">
+            {/* Deep, professional midnight blue base grid */}
+            <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-[0.05]" />
             
-            {/* Subtle Grid Pattern for professional look */}
-            <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-[0.03] dark:opacity-[0.05]" />
+            {/* Sophisticated Glow Orbs - Designed to complement dark background without overpowering */}
+            {/* Top Cyan/Blue Glow */}
+            <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] rounded-full bg-cyan-700/20 blur-[120px] mix-blend-screen hidden md:block" />
             
-            {/* Ambient Base Layer */}
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/50" />
+            {/* Bottom Vivid Purple Glow */}
+            <div className="absolute -bottom-[20%] -right-[10%] w-[60%] h-[60%] rounded-full bg-indigo-800/20 blur-[130px] mix-blend-screen hidden md:block" />
             
-            {/* Soft decorative blur */}
-            <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-blue-500/5 blur-[120px] dark:bg-blue-600/10" />
-            <div className="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] rounded-full bg-indigo-500/5 blur-[120px] dark:bg-indigo-600/10" />
+            {/* Center Soft Blue Fill */}
+            <div className="absolute top-[20%] left-[20%] w-[50%] h-[50%] rounded-full bg-blue-900/15 blur-[100px] mix-blend-screen pulse-glow-slow hidden md:block" />
+            
+            {/* Dark gradient vignette over everything to ensure edge contrast */}
+            <div className="absolute inset-0 bg-radial-gradient from-transparent via-[#0A0F1C]/50 to-[#0A0F1C] opacity-90" />
         </div>
     )
 }

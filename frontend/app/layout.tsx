@@ -8,8 +8,8 @@ import { ThemeProvider } from 'next-themes'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Lead Agent',
-  description: 'AI-Powered Lead Generation Agent',
+  title: 'Smart Lead Agent',
+  description: 'AI-Powered Smart Lead Generation Agent',
 }
 
 import { FuturisticBackground } from '@/components/ui/futuristic-background'
@@ -27,7 +27,7 @@ export default function RootLayout({
             <div className="h-full relative font-sans">
               <FuturisticBackground />
               <Navbar />
-              <main className="pt-20 h-full min-h-screen transition-colors duration-300 relative z-10">
+              <main className="pt-[104px] h-full min-h-screen transition-colors duration-300 relative z-10">
                 {children}
               </main>
             </div>
