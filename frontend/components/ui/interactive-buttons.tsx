@@ -42,76 +42,140 @@ function useMagnetic(strength = 20) {
 }
 
 
+const Particle = ({ delay }: { delay: number }) => (
+    <motion.div
+        initial={{ y: 0, x: 0, opacity: 0 }}
+        animate={{
+            y: -40,
+            x: Math.random() * 40 - 20,
+            opacity: [0, 1, 0],
+            scale: [0, 1, 0.5]
+        }}
+        transition={{
+            duration: 2,
+            repeat: Infinity,
+            delay: delay,
+            ease: "easeOut"
+        }}
+        className="absolute w-1 h-1 bg-white rounded-full blur-[1px] pointer-events-none"
+    />
+)
+
 export const DeployButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
-    ({ className, isLoading, icon: customIcon, size = "default", children, ...props }, ref) => {
+    ({ className, isLoading, onClick, children, ...props }, ref) => {
         const [isHovered, setIsHovered] = React.useState(false)
 
         return (
-            <div className="relative w-full group">
-                {/* Subtle Ambient Glow */}
+            <div className="relative w-full group perspective-1000">
+                {/* Emerald Glow Effect */}
                 <div className={cn(
-                    "absolute -inset-0.5 rounded-xl bg-gradient-to-r from-primary/50 to-primary-foreground/50 opacity-0 blur transition-all duration-500",
-                    isHovered && "opacity-20 blur-xl"
+                    "absolute -inset-1 rounded-xl bg-gradient-to-r from-emerald-500/40 to-teal-500/40 opacity-0 blur-xl transition-all duration-700",
+                    isHovered && "opacity-100 scale-110",
+                    isLoading && "opacity-50 animate-pulse"
                 )} />
 
                 <motion.button
                     ref={ref}
+                    disabled={isLoading}
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
-                    whileHover={{ scale: 0.995 }}
-                    whileTap={{ scale: 0.98 }}
+                    onClick={onClick}
+                    initial={false}
+                    animate={{
+                        scale: isLoading ? 0.98 : isHovered ? 1.05 : 1,
+                        y: isHovered && !isLoading ? -3 : 0,
+                    }}
+                    whileTap={{ scale: 0.96 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 20 }}
                     className={cn(
-                        "relative w-full flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-semibold transition-all duration-500 overflow-hidden shadow-lg",
-                        "bg-primary text-primary-foreground",
-                        "border border-primary-foreground/10",
+                        "relative w-full flex flex-col items-center justify-center min-h-[64px] px-8 py-4 rounded-xl font-bold transition-all duration-500 overflow-hidden shadow-2xl",
+                        "bg-gradient-to-br from-emerald-500 to-teal-600 text-white",
+                        "border border-white/20",
                         isLoading && "cursor-not-allowed opacity-80",
                         className
                     )}
                     {...(props as any)}
                 >
-                    {/* Breathing/Pulse Effect */}
-                    <div className="absolute inset-0 bg-white/5 animate-pulse opacity-0 group-hover:opacity-100 transition-opacity" />
-                    
-                    {/* Glass Shine Sweep */}
-                    <div className="absolute inset-0 -translate-x-full group-hover:animate-shine bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12" />
+                    {/* Inner Top Highlight */}
+                    <div className="absolute top-0 left-0 right-0 h-px bg-white/40 z-20" />
 
-                    <AnimatePresence mode="wait">
-                        {isLoading ? (
-                            <motion.div
-                                key="loading"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                className="flex items-center gap-2"
-                            >
-                                <Loader2 className="h-5 w-5 animate-spin" />
-                                <span className="uppercase tracking-widest text-xs font-bold">Initializing Agent...</span>
-                            </motion.div>
-                        ) : (
-                            <motion.div
-                                key="content"
-                                initial={{ opacity: 0, y: 5 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -5 }}
-                                className="flex items-center gap-2 relative z-10"
-                            >
-                                <Zap className="h-5 w-5 fill-current" />
-                                <span className="uppercase tracking-widest text-sm font-bold">
-                                    {children || "Deploy Fresh Packet Agent"}
-                                </span>
-                                <ArrowRight className={cn(
-                                    "h-4 w-4 transition-transform duration-300",
-                                    isHovered ? "translate-x-1" : ""
-                                )} />
-                            </motion.div>
+                    {/* Shimmer Effects */}
+                    <AnimatePresence>
+                        {isHovered && !isLoading && (
+                            <>
+                                <motion.div
+                                    initial={{ x: "-150%", skewX: -45 }}
+                                    animate={{ x: "250%" }}
+                                    transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1 }}
+                                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent w-full z-10"
+                                />
+                                <motion.div
+                                    initial={{ x: "-150%", skewX: -45 }}
+                                    animate={{ x: "250%" }}
+                                    transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1.2 }}
+                                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent w-full z-10"
+                                />
+                            </>
                         )}
                     </AnimatePresence>
+
+                    {/* Particles */}
+                    {isHovered && !isLoading && (
+                        <div className="absolute inset-0 flex items-center justify-center overflow-visible pointer-events-none">
+                            {[...Array(5)].map((_, i) => (
+                                <Particle key={i} delay={i * 0.4} />
+                            ))}
+                        </div>
+                    )}
+
+                    <div className="relative z-20 flex items-center justify-center gap-3 w-full">
+                        <AnimatePresence mode="wait">
+                            {isLoading ? (
+                                <motion.div
+                                    key="loading"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    className="flex items-center gap-3"
+                                >
+                                    <Loader2 className="h-5 w-5 animate-spin" />
+                                    <span className="text-base tracking-tight uppercase">
+                                        Intializing Agent
+                                    </span>
+                                </motion.div>
+                            ) : (
+                                <motion.div
+                                    key="idle"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    className="flex items-center gap-3"
+                                >
+                                    <motion.div
+                                        animate={isHovered ? { rotate: -12, scale: 1.2 } : { rotate: 0, scale: 1 }}
+                                        transition={{ type: "spring", stiffness: 300 }}
+                                    >
+                                        <Rocket className="h-5 w-5 fill-white/20" />
+                                    </motion.div>
+                                    <span className="text-base tracking-tight">
+                                        {children || "Deploy Fresh Packet Agent"}
+                                    </span>
+                                    <motion.div
+                                        animate={isHovered ? { x: 4 } : { x: 0 }}
+                                        transition={{ type: "spring", stiffness: 300 }}
+                                    >
+                                        <ArrowRight className="h-4 w-4" />
+                                    </motion.div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
                 </motion.button>
             </div>
         )
     }
 )
-DeployButton.displayName = "DeployButton"
+ DeployButton.displayName = "DeployButton"
 
 export const SendButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
     ({ className, isLoading, icon: customIcon, size = "default", children, ...props }, ref) => {
@@ -167,43 +231,55 @@ export const ClearButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
 
         return (
             <div className="relative inline-block group">
-                {/* Subtle Ambient Glow */}
+                {/* Vibrant Red Glow Effect */}
                 <div className={cn(
-                    "absolute -inset-0.5 rounded-xl bg-gradient-to-r from-destructive/50 to-destructive/20 opacity-0 blur transition-all duration-500",
-                    isHovered && "opacity-20 blur-xl"
+                    "absolute -inset-1 rounded-xl bg-gradient-to-r from-rose-500/40 to-red-600/40 opacity-0 blur-xl transition-all duration-700",
+                    isHovered && "opacity-100 scale-110"
                 )} />
 
                 <motion.button
                     ref={ref}
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
-                    whileHover={{ scale: 0.995 }}
-                    whileTap={{ scale: 0.98 }}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 20 }}
                     className={cn(
-                        "relative flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-500 overflow-hidden shadow-lg",
-                        "bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground",
-                        "border border-destructive/20",
+                        "relative flex items-center justify-center gap-2 rounded-xl font-bold transition-all duration-500 overflow-hidden shadow-2xl",
+                        "bg-gradient-to-br from-rose-500 to-red-600 text-white",
+                        "border border-white/20",
                         size === "sm" ? "px-4 py-2 text-xs" : size === "lg" ? "px-8 py-4 text-lg" : "px-6 py-3 text-sm",
                         className
                     )}
                     {...(props as any)}
                 >
-                    {/* Breathing/Pulse Effect */}
-                    <div className="absolute inset-0 bg-white/5 animate-pulse opacity-0 group-hover:opacity-100 transition-opacity" />
+                    {/* Inner Top Highlight */}
+                    <div className="absolute top-0 left-0 right-0 h-px bg-white/30 z-20" />
                     
                     {/* Glass Shine Sweep */}
-                    <div className="absolute inset-0 -translate-x-full group-hover:animate-shine bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12" />
+                    <AnimatePresence>
+                        {isHovered && (
+                            <motion.div 
+                                initial={{ x: "-150%", skewX: -45 }}
+                                animate={{ x: "250%" }}
+                                transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 0.5 }}
+                                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent w-full z-10"
+                            />
+                        )}
+                    </AnimatePresence>
 
-                    <div className="relative z-10 flex items-center gap-2">
-                        <Trash2 className={cn(
-                            "h-4 w-4 transition-transform duration-300",
-                            isHovered ? "rotate-12" : ""
-                        )} />
-                        <span>{children || "Clear All"}</span>
+                    <div className="relative z-20 flex items-center gap-2">
+                        <motion.div
+                            animate={isHovered ? { rotate: 12, scale: 1.1 } : { rotate: 0, scale: 1 }}
+                            transition={{ type: "spring", stiffness: 300 }}
+                        >
+                            <Trash2 className="h-4 w-4 fill-white/10" />
+                        </motion.div>
+                        <span className="tracking-wide">{children || "Clear All"}</span>
                     </div>
                 </motion.button>
             </div>
         )
     }
 )
-ClearButton.displayName = "ClearButton"
+ ClearButton.displayName = "ClearButton"

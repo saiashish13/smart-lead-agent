@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 }
 
 import { FuturisticBackground } from '@/components/ui/futuristic-background'
+import { AtmosphericBackground } from '@/components/ui/atmospheric-background'
 
 export default function RootLayout({
   children,
@@ -26,6 +27,7 @@ export default function RootLayout({
           <Providers>
             <div className="h-full relative font-sans">
               <FuturisticBackground />
+              <AtmosphericBackground />
               <Navbar />
               <main className="pt-20 h-full min-h-screen transition-colors duration-300 relative z-10">
                 {children}
