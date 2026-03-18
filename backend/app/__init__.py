@@ -7,9 +7,11 @@ def create_app():
     CORS(app)
     app.config.from_object(Config)
 
-    from app.extensions import db, migrate
+    from app.extensions import db, migrate, bcrypt, jwt
     db.init_app(app)
     migrate.init_app(app, db)
+    bcrypt.init_app(app)
+    jwt.init_app(app)
     
     from app import models # Verify models are loaded
     
@@ -27,6 +29,7 @@ def create_app():
     from app.routes.discovery_routes import discovery_bp
     from app.routes.leads_routes import leads_bp
     from app.routes.email_routes import email_bp
+    from app.routes.auth_routes import auth_bp
 
     app.register_blueprint(research_bp, url_prefix="/api/research")
     app.register_blueprint(enrichment_bp, url_prefix="/api/enrich")
@@ -36,6 +39,7 @@ def create_app():
     app.register_blueprint(discovery_bp, url_prefix="/api/campaign")
     app.register_blueprint(leads_bp, url_prefix="/api/leads")
     app.register_blueprint(email_bp)
+    app.register_blueprint(auth_bp, url_prefix="/api/auth")
     
     from app.routes.dashboard_routes import dashboard_bp
     app.register_blueprint(dashboard_bp)

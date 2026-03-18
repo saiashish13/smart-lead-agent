@@ -6,6 +6,9 @@ env_path = os.path.join(basedir, '.env')
 load_dotenv(dotenv_path=env_path)  # Ensure env vars are loaded
 
 class Config:
+    SECRET_KEY = os.getenv("SECRET_KEY", "default-secret-key")
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "default-jwt-secret-key")
+    
     # Database Configuration
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///leads_v2.db")
     SQLALCHEMY_TRACK_MODIFICATIONS = False

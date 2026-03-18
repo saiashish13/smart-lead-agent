@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
@@ -10,11 +10,13 @@ import {
     Users, 
     Zap,
     Menu,
-    X
+    X,
+    LogOut
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { useTheme } from "next-themes"
+import { Button } from "@/components/ui/button"
 
 const routes = [
     {
@@ -39,12 +41,21 @@ export function Navbar() {
     const { resolvedTheme } = useTheme()
     const [mounted, setMounted] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+    const router = useRouter()
+
+    const isAuthPage = pathname.startsWith("/auth")
+
+    const handleLogout = () => {
+        localStorage.removeItem("token")
+        localStorage.removeItem("user")
+        router.push("/auth/signin")
+    }
 
     useEffect(() => {
         setMounted(true)
     }, [])
 
-    if (!mounted) return null
+    if (!mounted || isAuthPage) return null
 
     const isDarkMode = resolvedTheme === "dark"
 
@@ -99,6 +110,13 @@ export function Navbar() {
                     <div className="flex items-center gap-4">
                         <ThemeToggle />
                         <button 
+                            onClick={handleLogout}
+                            className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-red-500/20 bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-all text-xs font-semibold"
+                        >
+                            <LogOut className="h-3.5 w-3.5" />
+                            LOGOUT
+                        </button>
+                        <button 
                             className="md:hidden p-2 text-white/70 hover:text-white transition"
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                         >
@@ -133,6 +151,13 @@ export function Navbar() {
                                         <span className="text-sm font-medium uppercase tracking-widest">{route.label}</span>
                                     </Link>
                                 ))}
+                                <button
+                                    onClick={handleLogout}
+                                    className="flex items-center gap-3 p-3 rounded-xl transition-all text-red-400 hover:bg-red-500/10"
+                                >
+                                    <LogOut className="h-5 w-5" />
+                                    <span className="text-sm font-medium uppercase tracking-widest">Logout</span>
+                                </button>
                             </div>
                         </motion.div>
                     )}
@@ -177,6 +202,15 @@ export function Navbar() {
 
                 <div className="flex items-center gap-4">
                     <ThemeToggle />
+                    <Button 
+                        variant="destructive" 
+                        size="sm" 
+                        onClick={handleLogout}
+                        className="hidden md:flex"
+                    >
+                        <LogOut className="h-4 w-4 mr-2" />
+                        Logout
+                    </Button>
                     <button 
                         className="md:hidden p-2 text-gray-500 hover:text-gray-900 transition"
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
