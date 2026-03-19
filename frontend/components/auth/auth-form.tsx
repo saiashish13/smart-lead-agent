@@ -6,18 +6,22 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { 
   User, Mail, Lock, Eye, EyeOff, ArrowRight, 
-  LogIn, UserPlus, Github, Chrome, Sparkles 
+  Chrome, Sparkles, LayoutDashboard, Settings
 } from "lucide-react"
-import { PremiumButton } from "@/components/ui/premium-button"
+import { CinematicButton } from "@/components/ui/cinematic-button"
 import { Input } from "@/components/ui/input"
-import api from "@/lib/api"
 import { cn } from "@/lib/utils"
 
 export const AuthFormUnified = () => {
   const [activeTab, setActiveTab] = useState<"signin" | "signup">("signin")
   const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  
+  // Specific focused state for premium input glow
+  const [focusedInput, setFocusedInput] = useState<string | null>(null)
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -74,208 +78,259 @@ export const AuthFormUnified = () => {
   }
 
   return (
-    <div className="w-full lg:w-1/2 min-h-screen flex items-center justify-center p-6 lg:p-12 xl:p-24 relative overflow-hidden bg-[#0a0a0f]">
-      {/* Background radial focus glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/10 blur-[120px] pointer-events-none z-0" />
+    <div className="w-full lg:w-1/2 min-h-screen flex items-center justify-center p-6 lg:p-12 xl:p-24 relative overflow-hidden z-10 perspective-1000">
+      
+      {/* Background radial focus glow specific to form area */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/10 blur-[140px] pointer-events-none -z-10" />
       
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-        className="w-full max-w-md relative z-10"
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-md relative"
+        style={{ transformStyle: "preserve-3d" }}
       >
-        {/* Minimal Glass Card */}
-        <div className="relative p-10 lg:p-12 rounded-[2.5rem] border border-white/5 bg-black/40 backdrop-blur-xl shadow-2xl overflow-hidden">
-          <div className="relative z-10">
-            {/* Header Section */}
-            <div className="mb-12">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-blue-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                  <Sparkles className="text-white h-5 w-5" />
-                </div>
-                <h2 className="text-3xl font-bold tracking-tight text-white font-heading text-gradient">
-                  {activeTab === "signin" ? "Welcome Back" : "Create Account"}
-                </h2>
-              </div>
-              <p className="text-white/60 text-sm leading-relaxed max-w-[280px]">
-                {activeTab === "signin" 
-                  ? "Enter your credentials to access your smart sales dashboard." 
-                  : "Join our elite network and supercharge your pipeline with AI."}
-              </p>
-            </div>
+        {/* Cinematic Glass Card */}
+        <div className="relative p-8 sm:p-10 lg:p-12 rounded-[2.5rem] bg-white/[0.02] border border-white/10 backdrop-blur-3xl shadow-[0_0_80px_rgba(0,0,0,0.8)] overflow-hidden isolate">
+          
+          {/* Subtle Inner Glow */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-50 pointer-events-none -z-10" />
+          <div className="absolute inset-0 rounded-[2.5rem] ring-1 ring-inset ring-white/5 pointer-events-none -z-10" />
 
-            {/* Option A: Minimal Text Tabs */}
-            <div className="flex gap-8 mb-12 relative border-b border-white/5 pb-4">
-              <button
-                onClick={() => setActiveTab("signin")}
-                className={cn(
-                  "text-sm font-bold uppercase tracking-[0.2em] transition-all duration-300 relative",
-                  activeTab === "signin" ? "text-white" : "text-white/40 hover:text-white/60"
-                )}
-              >
-                Sign In
-                {activeTab === "signin" && (
-                  <motion.div
-                    layoutId="tab-underline"
-                    className="absolute -bottom-[17px] left-0 right-0 h-[2px] bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-              </button>
-              <button
-                onClick={() => setActiveTab("signup")}
-                className={cn(
-                  "text-sm font-bold uppercase tracking-[0.2em] transition-all duration-300 relative",
-                  activeTab === "signup" ? "text-white" : "text-white/40 hover:text-white/60"
-                )}
-              >
-                Create Account
-                {activeTab === "signup" && (
-                  <motion.div
-                    layoutId="tab-underline"
-                    className="absolute -bottom-[17px] left-0 right-0 h-[2px] bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-              </button>
-            </div>
+          {/* Header Section */}
+          <div className="mb-10 text-center flex flex-col items-center">
+            <motion.div 
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200, damping: 20 }}
+              className="w-12 h-12 mb-6 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center border border-white/20 relative"
+            >
+              <div className="absolute inset-0 rounded-2xl pointer-events-none" />
+              <Sparkles className="text-white h-6 w-6" />
+            </motion.div>
+            
+            <h2 className="text-3xl font-bold tracking-tight text-white font-heading">
+              {activeTab === "signin" ? "Welcome Back" : "Create Account"}
+            </h2>
+            <p className="text-white/50 text-sm mt-3 leading-relaxed max-w-[280px]">
+              {activeTab === "signin" 
+                ? "Enter your credentials to access your smart sales dashboard." 
+                : "Join our elite network and supercharge your pipeline with AI."}
+            </p>
+          </div>
 
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-8">
-              <AnimatePresence mode="wait">
+          {/* Premium Pill Tabs */}
+          <div className="flex p-1 mb-10 bg-white/[0.03] border border-white/10 rounded-2xl relative z-20 shadow-inner">
+            <button
+              type="button"
+              onClick={() => setActiveTab("signin")}
+              className={cn(
+                "flex-1 relative h-12 rounded-xl text-xs font-bold uppercase tracking-widest transition-colors duration-300 z-10",
+                activeTab === "signin" ? "text-white" : "text-white/40 hover:text-white/70"
+              )}
+            >
+              Sign In
+              {activeTab === "signin" && (
                 <motion.div
-                  key={activeTab}
-                  initial={{ opacity: 0, x: 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  transition={{ duration: 0.3 }}
-                  className="space-y-6"
-                >
-                  {error && (
-                    <motion.div 
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      className={cn(
-                        "p-4 rounded-2xl border text-[10px] font-bold uppercase tracking-widest text-center",
-                        error.includes("Success") 
-                          ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
-                          : "bg-red-500/10 border-red-500/20 text-red-400"
-                      )}
-                    >
-                      {error}
-                    </motion.div>
-                  )}
+                  layoutId="active-tab"
+                  className="absolute inset-0 bg-white/10 border border-white/10 rounded-xl shadow-[0_2px_15px_rgba(0,0,0,0.5)] -z-10"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab("signup")}
+              className={cn(
+                "flex-1 relative h-12 rounded-xl text-xs font-bold uppercase tracking-widest transition-colors duration-300 z-10",
+                activeTab === "signup" ? "text-white" : "text-white/40 hover:text-white/70"
+              )}
+            >
+              Register
+              {activeTab === "signup" && (
+                <motion.div
+                  layoutId="active-tab"
+                  className="absolute inset-0 bg-white/10 border border-white/10 rounded-xl shadow-[0_2px_15px_rgba(0,0,0,0.5)] -z-10"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+            </button>
+          </div>
 
-                  {activeTab === "signup" && (
-                    <div className="space-y-2.5">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/90 ml-1">Full Name</label>
-                      <div className="relative group">
-                        <User className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/20 group-focus-within:text-emerald-400 group-focus-within:scale-110 transition-all duration-300" />
-                        <Input
-                          placeholder="John Doe"
-                          className="h-16 pl-14 bg-white/[0.03] border-white/5 rounded-2xl focus-visible:ring-0 focus-visible:border-emerald-500/50 hover:bg-white/[0.05] transition-all duration-300 text-white placeholder:text-white/20 focus:glow-neon-emerald shadow-inner"
-                          required
-                          value={formData.username}
-                          onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                        />
-                      </div>
-                    </div>
-                  )}
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-5"
+              >
+                {error && (
+                  <motion.div 
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    className={cn(
+                      "p-4 rounded-xl border text-xs font-bold uppercase tracking-widest text-center shadow-lg backdrop-blur-md",
+                      error.includes("Success") 
+                        ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                        : "bg-red-500/10 border-red-500/30 text-red-400"
+                    )}
+                  >
+                    {error}
+                  </motion.div>
+                )}
 
-                  <div className="space-y-2.5">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/90 ml-1">Email Address</label>
+                {activeTab === "signup" && (
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-white/50 ml-1">Full Name</label>
                     <div className="relative group">
-                      <Mail className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/20 group-focus-within:text-emerald-400 group-focus-within:scale-110 transition-all duration-300" />
+                      <User className={cn("absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-all duration-300", focusedInput === 'username' ? "text-emerald-400 scale-110" : "text-white/20")} />
                       <Input
-                        type="email"
-                        placeholder="name@company.com"
-                        className="h-16 pl-14 bg-white/[0.03] border-white/5 rounded-2xl focus-visible:ring-0 focus-visible:border-emerald-500/50 hover:bg-white/[0.05] transition-all duration-300 text-white placeholder:text-white/20 focus:glow-neon-emerald shadow-inner"
+                        placeholder="John Doe"
+                        className={cn(
+                          "h-14 pl-14 bg-white/[0.03] border-white/10 rounded-xl text-white placeholder:text-white/20 shadow-inner transition-all duration-300",
+                          focusedInput === 'username' ? "border-emerald-500/50 ring-1 ring-emerald-500/20 bg-emerald-500/[0.02]" : "hover:border-white/20 hover:bg-white/[0.05]"
+                        )}
                         required
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        value={formData.username}
+                        onFocus={() => setFocusedInput('username')}
+                        onBlur={() => setFocusedInput(null)}
+                        onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                       />
                     </div>
                   </div>
+                )}
 
-                  <div className="space-y-2.5">
-                    <div className="flex justify-between items-center px-1">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/90">Password</label>
-                      {activeTab === "signin" && (
-                        <Link href="#" className="text-[10px] font-bold uppercase tracking-widest text-emerald-400/60 hover:text-emerald-400 transition-colors">
-                          Forgot?
-                        </Link>
+                <div className="space-y-2 relative">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-white/50 ml-1 transition-colors">
+                    Email Address
+                  </label>
+                  <div className="relative group">
+                    <Mail className={cn(
+                      "absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-all duration-300",
+                      focusedInput === 'email' ? "text-emerald-400 scale-110 drop-shadow-[0_0_8px_rgba(16,185,129,0.8)]" : "text-white/20"
+                    )} />
+                    <Input
+                      type="email"
+                      placeholder="name@company.com"
+                      className={cn(
+                        "h-14 pl-14 bg-white/[0.03] border-white/10 rounded-xl text-white placeholder:text-white/20 shadow-inner transition-all duration-300",
+                        focusedInput === 'email' ? "border-emerald-500/50 ring-1 ring-emerald-500/20 bg-emerald-500/[0.02]" : "hover:border-white/20 hover:bg-white/[0.05]"
                       )}
-                    </div>
+                      required
+                      value={formData.email}
+                      onFocus={() => setFocusedInput('email')}
+                      onBlur={() => setFocusedInput(null)}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2 relative">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">Password</label>
+                  <div className="relative group">
+                    <Lock className={cn(
+                      "absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-all duration-300",
+                      focusedInput === 'password' ? "text-emerald-400 scale-110 drop-shadow-[0_0_8px_rgba(16,185,129,0.8)]" : "text-white/20"
+                    )} />
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                      className={cn(
+                        "h-14 pl-14 pr-14 bg-white/[0.03] border-white/10 rounded-xl text-white placeholder:text-white/30 shadow-inner transition-all duration-300 tracking-widest",
+                        focusedInput === 'password' ? "border-emerald-500/50 ring-1 ring-emerald-500/20 bg-emerald-500/[0.02]" : "hover:border-white/20 hover:bg-white/[0.05]"
+                      )}
+                      required
+                      value={formData.password}
+                      onFocus={() => setFocusedInput('password')}
+                      onBlur={() => setFocusedInput(null)}
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                {activeTab === "signup" && (
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-white/50 ml-1">Confirm Password</label>
                     <div className="relative group">
-                      <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/20 group-focus-within:text-emerald-400 group-focus-within:scale-110 transition-all duration-300" />
+                      <Lock className={cn("absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 transition-all duration-300", focusedInput === 'confirmPassword' ? "text-emerald-400 scale-110" : "text-white/20")} />
                       <Input
-                        type={showPassword ? "text" : "password"}
+                        type={showConfirmPassword ? "text" : "password"}
                         placeholder="••••••••"
-                        className="h-16 pl-14 pr-14 bg-white/[0.03] border-white/5 rounded-2xl focus-visible:ring-0 focus-visible:border-emerald-500/50 hover:bg-white/[0.05] transition-all duration-300 text-white placeholder:text-white/20 focus:glow-neon-emerald shadow-inner"
+                        className={cn(
+                          "h-14 pl-14 pr-14 bg-white/[0.03] border-white/10 rounded-xl text-white placeholder:text-white/30 shadow-inner transition-all duration-300 tracking-widest",
+                          focusedInput === 'confirmPassword' ? "border-emerald-500/50 ring-1 ring-emerald-500/20 bg-emerald-500/[0.02]" : "hover:border-white/20 hover:bg-white/[0.05]"
+                        )}
                         required
-                        value={formData.password}
-                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        value={formData.confirmPassword}
+                        onFocus={() => setFocusedInput('confirmPassword')}
+                        onBlur={() => setFocusedInput(null)}
+                        onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                       />
                       <button
                         type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-5 top-1/2 -translate-y-1/2 text-white/20 hover:text-white transition-colors"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute right-5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
                       >
-                        {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                        {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </button>
                     </div>
                   </div>
-
-                  {activeTab === "signup" && (
-                    <div className="space-y-2.5">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/90 ml-1">Confirm Password</label>
-                      <div className="relative group">
-                        <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-white/20 group-focus-within:text-emerald-400 group-focus-within:scale-110 transition-all duration-300" />
-                        <Input
-                          type="password"
-                          placeholder="••••••••"
-                          className="h-16 pl-14 bg-white/[0.03] border-white/5 rounded-2xl focus-visible:ring-0 focus-visible:border-emerald-500/50 hover:bg-white/[0.05] transition-all duration-300 text-white placeholder:text-white/20 focus:glow-neon-emerald shadow-inner"
-                          required
-                          value={formData.confirmPassword}
-                          onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                        />
-                      </div>
-                    </div>
-                  )}
-                </motion.div>
-              </AnimatePresence>
-
-              <PremiumButton 
-                type="submit" 
-                disabled={isLoading}
-                variant={activeTab === "signin" ? "primary" : "secondary"}
-                className="w-full mt-4"
-              >
-                {isLoading ? "Synchronizing..." : (
-                  <>
-                    <span className="font-bold tracking-[0.3em]">
-                      {activeTab === "signin" ? "Access Dashboard" : "Initiate Setup"}
-                    </span>
-                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-2" />
-                  </>
                 )}
-              </PremiumButton>
-            </form>
+              </motion.div>
+            </AnimatePresence>
 
-            {/* Social Entry */}
-            <div className="mt-12 pt-12 border-t border-white/5">
-              <div className="flex justify-center">
-                <button 
-                  className="w-full max-w-[240px] flex items-center justify-center gap-3 h-14 rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.06] hover:border-emerald-500/30 transition-all duration-300 group"
-                >
-                  <Chrome className="h-4 w-4 text-white/30 group-hover:text-white transition-colors" />
-                  <span className="text-[10px] font-bold text-white/30 group-hover:text-white tracking-[0.2em] uppercase">Continue with Google</span>
-                </button>
-              </div>
+            {activeTab === "signin" ? (
+              <CinematicButton 
+                type="submit"
+                disabled={isLoading}
+                theme="cyan"
+                label={isLoading ? "Authenticating..." : "Access Dashboard"}
+                icon={LayoutDashboard}
+                className="mt-6"
+              />
+            ) : (
+              <CinematicButton 
+                type="submit"
+                disabled={isLoading}
+                theme="violet"
+                label={isLoading ? "Synchronizing..." : "Initiate Setup"}
+                icon={Settings}
+                className="mt-6"
+              />
+            )}
+          </form>
+
+          {/* Social Entry */}
+          <div className="mt-10 pt-8 border-t border-white/10 relative">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0a0a0f] px-4 text-[10px] font-bold uppercase tracking-widest text-white/30 hidden">
+              OR
+            </div>
+            <div className="flex justify-center">
+              <button 
+                className="w-full flex items-center justify-center gap-3 h-14 rounded-xl bg-white/[0.02] border border-white/10 hover:bg-white/[0.05] transition-all duration-300 group"
+              >
+                <Chrome className="h-4 w-4 text-white/40 group-hover:text-emerald-400 transition-colors duration-300" />
+                <span className="text-[10px] font-bold text-white/40 group-hover:text-white tracking-widest uppercase transition-colors duration-300">
+                  Continue with Google
+                </span>
+              </button>
             </div>
           </div>
+          
         </div>
       </motion.div>
     </div>
   )
 }
+
