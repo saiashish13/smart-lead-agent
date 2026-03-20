@@ -6,7 +6,7 @@ import api from "@/lib/api"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 export function AutomationLog() {
-    const scrollRef = useRef<HTMLDivElement>(null)
+    const scrollRef = useRef(null)
 
     const { data: logs } = useQuery({
         queryKey: ["automation-logs"],
@@ -45,7 +45,7 @@ export function AutomationLog() {
                     {logs?.length === 0 && (
                         <div className="text-muted-foreground italic">Waiting for pipeline activity...</div>
                     )}
-                    {logs?.map((log: any, i: number) => (
+                    {logs?.map((log, i) => (
                         <div key={i} className="flex items-start">
                             <span className="text-muted-foreground/50 mr-2">[{log.time}]</span>
                             <span className="text-foreground/80 dark:text-zinc-300">{log.message}</span>

@@ -83,6 +83,7 @@ export function Navbar() {
                     <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center bg-white/4 border border-white/10 rounded-full p-1.5 backdrop-blur-md">
                         {routes.map((route) => {
                             const isActive = pathname === route.href
+                            const Icon = route.icon
                             return (
                                 <Link
                                     key={route.href}
@@ -99,7 +100,7 @@ export function Navbar() {
                                             transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
                                         />
                                     )}
-                                    <route.icon className="h-4 w-4" />
+                                    <Icon className="h-4 w-4" />
                                     <span className="text-xs font-medium uppercase tracking-widest">{route.label}</span>
                                 </Link>
                             )
@@ -135,22 +136,25 @@ export function Navbar() {
                             className="absolute top-16 left-0 right-0 bg-[#020205]/95 border-b border-white/10 backdrop-blur-2xl md:hidden overflow-hidden"
                         >
                             <div className="flex flex-col p-6 gap-4">
-                                {routes.map((route) => (
-                                    <Link
-                                        key={route.href}
-                                        href={route.href}
-                                        onClick={() => setIsMobileMenuOpen(false)}
-                                        className={cn(
-                                            "flex items-center gap-3 p-3 rounded-xl transition-all",
-                                            pathname === route.href 
-                                                ? "bg-white/10 text-white" 
-                                                : "text-gray-400 hover:text-white hover:bg-white/5"
-                                        )}
-                                    >
-                                        <route.icon className="h-5 w-5" />
-                                        <span className="text-sm font-medium uppercase tracking-widest">{route.label}</span>
-                                    </Link>
-                                ))}
+                                {routes.map((route) => {
+                                    const Icon = route.icon
+                                    return (
+                                        <Link
+                                            key={route.href}
+                                            href={route.href}
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                            className={cn(
+                                                "flex items-center gap-3 p-3 rounded-xl transition-all",
+                                                pathname === route.href 
+                                                    ? "bg-white/10 text-white" 
+                                                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                                            )}
+                                        >
+                                            <Icon className="h-5 w-5" />
+                                            <span className="text-sm font-medium uppercase tracking-widest">{route.label}</span>
+                                        </Link>
+                                    )
+                                })}
                                 <button
                                     onClick={handleLogout}
                                     className="flex items-center gap-3 p-3 rounded-xl transition-all text-red-400 hover:bg-red-500/10"

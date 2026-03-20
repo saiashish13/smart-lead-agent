@@ -110,7 +110,7 @@ export default function DashboardPage() {
                     No leads yet. Run a campaign to get started!
                   </div>
                 )}
-                {recentLeads.map((lead: any) => (
+                {recentLeads.map((lead) => (
                   <div key={lead.id} className="px-4 py-3 hover:bg-muted/50 transition-colors">
                     <div className="flex items-center justify-between gap-2">
                       <div className="min-w-0">

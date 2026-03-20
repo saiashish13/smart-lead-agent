@@ -1,25 +1,8 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { motion, AnimatePresence, HTMLMotionProps } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
-
-interface Particle {
-  id: number
-  x: number
-  y: number
-  size: number
-  duration: number
-  delay: number
-  colorIndex: number
-}
-
-interface PremiumButtonProps extends HTMLMotionProps<"button"> {
-  children: React.ReactNode
-  variant?: "primary" | "secondary"
-  glowColor?: string
-  particleCount?: number
-}
 
 export const PremiumButton = ({
   children,
@@ -28,9 +11,9 @@ export const PremiumButton = ({
   glowColor = "emerald",
   particleCount = 12,
   ...props
-}: PremiumButtonProps) => {
+}) => {
   const [isHovered, setIsHovered] = useState(false)
-  const [particles, setParticles] = useState<Particle[]>([])
+  const [particles, setParticles] = useState([])
 
   const primaryColors = ["bg-emerald-400", "bg-cyan-400", "bg-blue-400"]
   const secondaryColors = ["bg-purple-400", "bg-pink-400", "bg-rose-400", "bg-fuchsia-400"]

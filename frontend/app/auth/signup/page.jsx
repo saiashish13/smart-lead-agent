@@ -20,7 +20,7 @@ export default function SignUpPage() {
     password: "",
   })
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true)
     setError("")
@@ -28,7 +28,7 @@ export default function SignUpPage() {
     try {
       await api.post("/auth/register", formData)
       router.push("/auth/signin")
-    } catch (err: any) {
+    } catch (err) {
       setError(err.response?.data?.msg || "Something went wrong. Please try again.")
     } finally {
       setIsLoading(false)

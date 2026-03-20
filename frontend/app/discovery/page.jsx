@@ -4,10 +4,9 @@ import { useState } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import api from "@/lib/api"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
 import { DeployButton } from "@/components/ui/interactive-buttons"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Search, Loader2, Sparkles, Target, RefreshCw } from "lucide-react"
+import { Search, Target } from "lucide-react"
 
 export default function DiscoveryPage() {
     const [query, setQuery] = useState("")
@@ -31,7 +30,7 @@ export default function DiscoveryPage() {
         },
     })
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e) => {
         e.preventDefault()
         if (!query.trim() || !productName.trim()) return
         searchLeads()
@@ -104,8 +103,6 @@ export default function DiscoveryPage() {
                                 />
                             </div>
                         </div>
-
-
 
                         <DeployButton
                             type="submit"

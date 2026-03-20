@@ -1,20 +1,8 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
-
-export type Theme = "cyan" | "violet"
-
-interface CinematicButtonProps {
-  theme?: Theme
-  label: string
-  icon: React.ElementType
-  onClick?: () => void
-  disabled?: boolean
-  className?: string
-  type?: "button" | "submit" | "reset"
-}
 
 // Particle configurations
 const NUM_EXPLOSION_PARTICLES = 16
@@ -36,20 +24,6 @@ const themes = {
   }
 }
 
-interface ExplosionParticle {
-  id: number
-  x: number
-  y: number
-  color: string
-}
-
-interface SparkleParticle {
-  id: number
-  top: string
-  left: string
-  color: string
-}
-
 export function CinematicButton({ 
   theme = "cyan", 
   label, 
@@ -58,18 +32,18 @@ export function CinematicButton({
   disabled,
   className,
   type = "button"
-}: CinematicButtonProps) {
+}) {
   const [isHovered, setIsHovered] = useState(false)
   
   const currentTheme = themes[theme]
 
   // Generated static particle configs so they don't jump around on re-renders, but trigger on hover
-  const [explosionParticles, setExplosionParticles] = useState<ExplosionParticle[]>([])
-  const [sparkleParticles, setSparkleParticles] = useState<SparkleParticle[]>([])
+  const [explosionParticles, setExplosionParticles] = useState([])
+  const [sparkleParticles, setSparkleParticles] = useState([])
 
   useEffect(() => {
     // Generate explosion particles (circle distribution)
-    const exp: ExplosionParticle[] = []
+    const exp = []
     for (let i = 0; i < NUM_EXPLOSION_PARTICLES; i++) {
         const angle = (Math.PI * 2 * i) / NUM_EXPLOSION_PARTICLES
         // radius between 60 to 100
@@ -84,7 +58,7 @@ export function CinematicButton({
     setExplosionParticles(exp)
 
     // Generate sparkle particles (scattered around)
-    const sparks: SparkleParticle[] = []
+    const sparks = []
     for (let i = 0; i < NUM_SPARKLE_PARTICLES; i++) {
         sparks.push({
             id: i,

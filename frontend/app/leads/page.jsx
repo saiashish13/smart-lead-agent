@@ -14,12 +14,12 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { SendButton, ClearButton } from "@/components/ui/interactive-buttons"
-import { Trash2, Send } from "lucide-react"
+import { Trash2 } from "lucide-react"
 import { useState } from "react"
 
 export default function LeadsPage() {
     const queryClient = useQueryClient()
-    const [sendingId, setSendingId] = useState<number | null>(null)
+    const [sendingId, setSendingId] = useState(null)
 
     const { data: leads, isLoading, isError } = useQuery({
         queryKey: ["leads"],
@@ -30,7 +30,7 @@ export default function LeadsPage() {
     })
 
     const { mutate: sendEmail } = useMutation({
-        mutationFn: async (leadId: number) => {
+        mutationFn: async (leadId) => {
             setSendingId(leadId)
             const res = await api.post(`/leads/${leadId}/send-email`)
             return res.data
@@ -45,7 +45,7 @@ export default function LeadsPage() {
     })
 
     const { mutate: deleteLead } = useMutation({
-        mutationFn: async (leadId: number) => {
+        mutationFn: async (leadId) => {
             await api.delete(`/leads/${leadId}`)
         },
         onSuccess: () => {
@@ -109,7 +109,7 @@ export default function LeadsPage() {
                                     </TableCell>
                                 </TableRow>
                             )}
-                            {leads?.map((lead: any) => (
+                            {leads?.map((lead) => (
                                 <TableRow key={lead.id} className="border-zinc-800 hover:bg-zinc-800/50">
                                     <TableCell className="font-medium text-zinc-200">
                                         <div>{lead.name}</div>
@@ -122,9 +122,9 @@ export default function LeadsPage() {
                                     <TableCell>
                                         <Badge variant="outline" className={`
                         ${lead.status === 'processed' ? 'border-emerald-500/50 text-emerald-400' :
-                                                lead.status === 'error' ? 'border-red-500/50 text-red-400' :
-                                                    'border-blue-500/50 text-blue-400'}
-                      `}>
+                                                 lead.status === 'error' ? 'border-red-500/50 text-red-400' :
+                                                     'border-blue-500/50 text-blue-400'}
+                       `}>
                                             {lead.status}
                                         </Badge>
                                     </TableCell>

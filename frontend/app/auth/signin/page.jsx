@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Zap, Mail, Lock, LogIn, ArrowRight } from "lucide-react"
+import { Zap, Mail, Lock, LogIn } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -19,7 +19,7 @@ export default function SignInPage() {
     password: "",
   })
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true)
     setError("")
@@ -33,7 +33,7 @@ export default function SignInPage() {
       window.dispatchEvent(new Event("storage"))
       router.push("/")
       router.refresh()
-    } catch (err: any) {
+    } catch (err) {
       setError(err.response?.data?.msg || "Invalid email or password.")
     } finally {
       setIsLoading(false)

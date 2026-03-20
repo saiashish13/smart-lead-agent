@@ -1,4 +1,3 @@
-import type { Metadata } from 'next'
 import { Inter, Space_Grotesk, Poppins } from 'next/font/google'
 import './globals.css'
 import { Navbar } from '@/components/navbar'
@@ -13,7 +12,7 @@ const poppins = Poppins({
   variable: '--font-poppins' 
 })
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Lead Agent',
   description: 'AI-Powered Lead Generation Agent',
 }
@@ -24,8 +23,6 @@ import { AuthGuard } from '@/components/auth-guard'
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode
 }) {
   return (
     <html lang="en" suppressHydrationWarning>

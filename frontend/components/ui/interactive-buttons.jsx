@@ -2,14 +2,8 @@
 
 import * as React from "react"
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion"
-import { Rocket, Send, Trash2, Loader2, Sparkles as SparklesIcon, ArrowRight, Zap } from "lucide-react"
+import { Rocket, Send, Trash2, Loader2, ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
-
-interface BaseButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    isLoading?: boolean
-    icon?: React.ReactNode
-    size?: "default" | "sm" | "lg" | "icon"
-}
 
 /**
  * Hook for magnetic effect
@@ -22,7 +16,7 @@ function useMagnetic(strength = 20) {
     const x = useSpring(mouseX, springConfig)
     const y = useSpring(mouseY, springConfig)
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const handleMouseMove = (e) => {
         const { clientX, clientY, currentTarget } = e
         const { left, top, width, height } = currentTarget.getBoundingClientRect()
         const centerX = left + width / 2
@@ -42,7 +36,7 @@ function useMagnetic(strength = 20) {
 }
 
 
-const Particle = ({ delay }: { delay: number }) => (
+const Particle = ({ delay }) => (
     <motion.div
         initial={{ y: 0, x: 0, opacity: 0 }}
         animate={{
@@ -61,7 +55,7 @@ const Particle = ({ delay }: { delay: number }) => (
     />
 )
 
-export const DeployButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
+export const DeployButton = React.forwardRef(
     ({ className, isLoading, onClick, children, ...props }, ref) => {
         const [isHovered, setIsHovered] = React.useState(false)
 
@@ -94,7 +88,7 @@ export const DeployButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>
                         isLoading && "cursor-not-allowed opacity-80",
                         className
                     )}
-                    {...(props as any)}
+                    {...props}
                 >
                     {/* Inner Top Highlight */}
                     <div className="absolute top-0 left-0 right-0 h-px bg-white/40 z-20" />
@@ -177,8 +171,8 @@ export const DeployButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>
 )
  DeployButton.displayName = "DeployButton"
 
-export const SendButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
-    ({ className, isLoading, icon: customIcon, size = "default", children, ...props }, ref) => {
+export const SendButton = React.forwardRef(
+    ({ className, isLoading, size = "default", children, ...props }, ref) => {
         const { x, y, handleMouseMove, handleMouseLeave } = useMagnetic(10)
 
         return (
@@ -199,7 +193,7 @@ export const SendButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
                         size === "sm" ? "px-3 py-1.5 text-[0.7rem] uppercase tracking-wider" : size === "lg" ? "px-6 py-3 text-lg" : "px-4 py-2 text-base",
                         className
                     )}
-                    {...(props as any)}
+                    {...props}
                 >
                     <div className="absolute inset-0 -translate-x-full group-hover:animate-shine bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
@@ -225,8 +219,8 @@ export const SendButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
 )
 SendButton.displayName = "SendButton"
 
-export const ClearButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
-    ({ className, size = "default", isLoading, icon: customIcon, children, ...props }, ref) => {
+export const ClearButton = React.forwardRef(
+    ({ className, size = "default", isLoading, children, ...props }, ref) => {
         const [isHovered, setIsHovered] = React.useState(false)
 
         return (
@@ -251,7 +245,7 @@ export const ClearButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
                         size === "sm" ? "px-4 py-2 text-xs" : size === "lg" ? "px-8 py-4 text-lg" : "px-6 py-3 text-sm",
                         className
                     )}
-                    {...(props as any)}
+                    {...props}
                 >
                     {/* Inner Top Highlight */}
                     <div className="absolute top-0 left-0 right-0 h-px bg-white/30 z-20" />

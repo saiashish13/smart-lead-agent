@@ -3,9 +3,8 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
 import { 
-  User, Mail, Lock, Eye, EyeOff, ArrowRight, 
+  User, Mail, Lock, Eye, EyeOff, 
   Chrome, Sparkles, LayoutDashboard, Settings
 } from "lucide-react"
 import { CinematicButton } from "@/components/ui/cinematic-button"
@@ -13,14 +12,14 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
 export const AuthFormUnified = () => {
-  const [activeTab, setActiveTab] = useState<"signin" | "signup">("signin")
+  const [activeTab, setActiveTab] = useState("signin")
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState(null)
   
   // Specific focused state for premium input glow
-  const [focusedInput, setFocusedInput] = useState<string | null>(null)
+  const [focusedInput, setFocusedInput] = useState(null)
 
   const [formData, setFormData] = useState({
     username: "",
@@ -31,7 +30,7 @@ export const AuthFormUnified = () => {
 
   const router = useRouter()
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true)
     setError(null)
@@ -70,7 +69,7 @@ export const AuthFormUnified = () => {
         setError("Registration successful! Please Sign In.")
         setTimeout(() => setActiveTab("signin"), 2000)
       }
-    } catch (err: any) {
+    } catch (err) {
       setError(err.message)
     } finally {
       setIsLoading(false)
@@ -333,4 +332,3 @@ export const AuthFormUnified = () => {
     </div>
   )
 }
-

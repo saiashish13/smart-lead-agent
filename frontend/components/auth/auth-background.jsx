@@ -13,15 +13,6 @@ const Orb = ({
     duration = 20, 
     driftX = 100,
     driftY = 100
-}: { 
-    className?: string
-    color: string
-    size: number
-    blur: number
-    delay?: number
-    duration?: number
-    driftX?: number
-    driftY?: number
 }) => {
     return (
         <motion.div

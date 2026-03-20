@@ -39,7 +39,7 @@ export function RecentSent() {
                     {!isLoading && leads.length === 0 && (
                         <div className="p-4 text-muted-foreground text-sm italic">No emails sent yet. Click &quot;Send&quot; on a lead to get started.</div>
                     )}
-                    {leads.map((lead: any) => (
+                    {leads.map((lead) => (
                         <div key={lead.id} className="px-4 py-3 hover:bg-muted/50 transition-colors">
                             <div className="flex items-start justify-between gap-2">
                                 <div className="min-w-0">

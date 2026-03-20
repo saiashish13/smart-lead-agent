@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Sparkles, ShieldCheck, Zap, Rocket, ArrowUpRight, Cpu, MousePointer2 } from "lucide-react"
+import { Sparkles, ShieldCheck, ArrowUpRight, Cpu, MousePointer2 } from "lucide-react"
 
 const features = [
   {
@@ -65,47 +65,50 @@ export function AuthBrandingPanel() {
           {/* Subtle glow connector */}
           <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-emerald-500/0 via-emerald-500/20 to-emerald-500/0 md:hidden" />
           
-          {features.map((feature, idx) => (
-            <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 + idx * 0.1, ease: [0.4, 0, 0.2, 1] }}
-              whileHover={{ 
-                y: -6,
-                transition: { duration: 0.3 }
-              }}
-              className={`relative group p-8 rounded-[2rem] border border-white/5 bg-white/[0.02] backdrop-blur-xl transition-all duration-500 premium-easing text-left overflow-hidden ${feature.glow}`}
-            >
-              {/* Card Inner Glow */}
-              <div className={`absolute -right-4 -bottom-4 w-32 h-32 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-[0.08] blur-2xl transition-opacity duration-500`} />
-              
-              <div className="flex items-start gap-6 relative z-10">
-                <div className={`shrink-0 w-14 h-14 rounded-2xl bg-black/40 border border-white/5 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:-rotate-3 group-hover:border-white/10 shadow-2xl`}>
-                  <feature.icon className={`h-7 w-7 text-white/30 group-hover:text-white transition-colors duration-500`} />
-                </div>
-                
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-xl font-bold text-white tracking-tight font-heading uppercase italic">
-                      {feature.title}
-                    </h3>
-                    <ArrowUpRight className="h-5 w-5 text-white/0 group-hover:text-emerald-400 -translate-x-2 translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-500" />
+          {features.map((feature, idx) => {
+            const Icon = feature.icon
+            return (
+                <motion.div
+                  key={feature.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 + idx * 0.1, ease: [0.4, 0, 0.2, 1] }}
+                  whileHover={{ 
+                    y: -6,
+                    transition: { duration: 0.3 }
+                  }}
+                  className={`relative group p-8 rounded-[2rem] border border-white/5 bg-white/[0.02] backdrop-blur-xl transition-all duration-500 premium-easing text-left overflow-hidden ${feature.glow}`}
+                >
+                  {/* Card Inner Glow */}
+                  <div className={`absolute -right-4 -bottom-4 w-32 h-32 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-[0.08] blur-2xl transition-opacity duration-500`} />
+                  
+                  <div className="flex items-start gap-6 relative z-10">
+                    <div className={`shrink-0 w-14 h-14 rounded-2xl bg-black/40 border border-white/5 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:-rotate-3 group-hover:border-white/10 shadow-2xl`}>
+                      <Icon className={`h-7 w-7 text-white/30 group-hover:text-white transition-colors duration-500`} />
+                    </div>
+                    
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-xl font-bold text-white tracking-tight font-heading uppercase italic">
+                          {feature.title}
+                        </h3>
+                        <ArrowUpRight className="h-5 w-5 text-white/0 group-hover:text-emerald-400 -translate-x-2 translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-500" />
+                      </div>
+                      <p className="text-white/40 text-sm leading-relaxed font-medium group-hover:text-white/60 transition-colors duration-500 pr-4">
+                        {feature.desc}
+                      </p>
+                    </div>
                   </div>
-                  <p className="text-white/40 text-sm leading-relaxed font-medium group-hover:text-white/60 transition-colors duration-500 pr-4">
-                    {feature.desc}
-                  </p>
-                </div>
-              </div>
 
-              {/* Progress-like subtle line at bottom on hover */}
-              <motion.div 
-                initial={{ x: "-100%" }}
-                whileHover={{ x: "0%" }}
-                className={`absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r ${feature.gradient} opacity-50`}
-              />
-            </motion.div>
-          ))}
+                  {/* Progress-like subtle line at bottom on hover */}
+                  <motion.div 
+                    initial={{ x: "-100%" }}
+                    whileHover={{ x: "0%" }}
+                    className={`absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r ${feature.gradient} opacity-50`}
+                  />
+                </motion.div>
+            )
+          })}
         </div>
 
         {/* Footer Accent */}

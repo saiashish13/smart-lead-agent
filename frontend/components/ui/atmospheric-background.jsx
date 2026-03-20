@@ -13,14 +13,6 @@ const Orb = ({
     delay = 0, 
     duration = 20, 
     drift = 100 
-}: { 
-    className?: string
-    color: string
-    size: number
-    blur: number
-    delay?: number
-    duration?: number
-    drift?: number
 }) => {
     return (
         <motion.div
@@ -54,7 +46,7 @@ const Orb = ({
 }
 
 export const AtmosphericBackground = () => {
-    const { theme, resolvedTheme } = useTheme()
+    const { resolvedTheme } = useTheme()
     const [mounted, setMounted] = React.useState(false)
 
     // Wait for mount to avoid hydration mismatch

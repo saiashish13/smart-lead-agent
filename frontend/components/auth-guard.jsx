@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useRouter, usePathname } from "next/navigation"
 
-export function AuthGuard({ children }: { children: React.ReactNode }) {
+export function AuthGuard({ children }) {
   const router = useRouter()
   const pathname = usePathname()
   const [isReady, setIsReady] = useState(false)
