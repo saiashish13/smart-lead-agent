@@ -7,11 +7,19 @@ def create_app():
     CORS(app)
     app.config.from_object(Config)
 
-    from app.extensions import db, migrate, bcrypt, jwt
+    from app.extensions import db, migrate, bcrypt, jwt, oauth
     db.init_app(app)
     migrate.init_app(app, db)
     bcrypt.init_app(app)
     jwt.init_app(app)
+    oauth.init_app(app)
+    oauth.register(
+        name='google',
+        client_id=app.config.get('GOOGLE_CLIENT_ID'),
+        client_secret=app.config.get('GOOGLE_CLIENT_SECRET'),
+        server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+        client_kwargs={'scope': 'openid email profile'},
+    )
     
     from app import models # Verify models are loaded
     

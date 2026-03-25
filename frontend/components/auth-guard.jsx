@@ -11,19 +11,28 @@ export function AuthGuard({ children }) {
   useEffect(() => {
     const checkAuth = () => {
       const token = localStorage.getItem("token")
-      const isAuthPage = pathname === "/auth"
+      const isAuthPage = pathname.startsWith("/auth")
+      const isCallbackPage = pathname === "/auth/callback"
+
+      // Allow the callback page to load freely — it has its own redirect logic
+      if (isCallbackPage) {
+        setIsReady(true)
+        return
+      }
 
       if (!token && !isAuthPage) {
+        // Not logged in and not on an auth page → go to login
         router.push("/auth")
-      } else if (token && isAuthPage) {
-        router.push("/")
+      } else if (token && pathname === "/auth") {
+        // Logged in but on auth page → go to dashboard
+        router.push("/dashboard")
       } else {
         setIsReady(true)
       }
     }
 
     checkAuth()
-    
+
     // Listen for storage events (login/logout from other tabs)
     window.addEventListener("storage", checkAuth)
     return () => window.removeEventListener("storage", checkAuth)

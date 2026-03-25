@@ -10,6 +10,7 @@ import {
 import { CinematicButton } from "@/components/ui/cinematic-button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
+import { supabase } from "@/lib/supabase-client"
 
 export const AuthFormUnified = () => {
   const [activeTab, setActiveTab] = useState("signin")
@@ -29,6 +30,11 @@ export const AuthFormUnified = () => {
   })
 
   const router = useRouter()
+
+  const signInWithGoogle = () => {
+    // Redirect to Flask backend which initiates the Google OAuth flow
+    window.location.href = 'http://localhost:5000/api/auth/google'
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -315,9 +321,12 @@ export const AuthFormUnified = () => {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0a0a0f] px-4 text-[10px] font-bold uppercase tracking-widest text-white/30 hidden">
               OR
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center w-full">
               <button 
-                className="w-full flex items-center justify-center gap-3 h-14 rounded-xl bg-white/[0.02] border border-white/10 hover:bg-white/[0.05] transition-all duration-300 group"
+                type="button"
+                onClick={signInWithGoogle}
+                disabled={isLoading}
+                className="w-full flex items-center justify-center gap-3 h-14 rounded-xl bg-white/[0.02] border border-white/10 hover:bg-white/[0.05] disabled:opacity-50 transition-all duration-300 group"
               >
                 <Chrome className="h-4 w-4 text-white/40 group-hover:text-emerald-400 transition-colors duration-300" />
                 <span className="text-[10px] font-bold text-white/40 group-hover:text-white tracking-widest uppercase transition-colors duration-300">

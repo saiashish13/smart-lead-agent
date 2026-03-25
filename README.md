@@ -29,6 +29,7 @@ An AI-powered, full-stack lead generation and outreach platform. **Smart Lead Ag
 ### AI & Infrastructure
 - **LLMs:** Groq (Llama 3.1), OpenAI
 - **Search Tool:** Tavily API
+- **Auth Service:** Supabase (Social Login)
 - **Workflow:** LangChain
 - **Environment:** Python Dotenv
 
@@ -41,7 +42,7 @@ An AI-powered, full-stack lead generation and outreach platform. **Smart Lead Ag
 - **✉️ Automated Outreach:** Schedule and send personalized emails directly from the dashboard.
 - **📊 Real-time Dashboard:** Monitor your lead pipeline, outreach success, and system health.
 - **⚡ Background Processing:** Hand off heavy research and mailing tasks to Celery workers.
-- **🔒 Secure Workspace:** JWT-protected authentication and user-specific lead management.
+- **🔒 Secure Workspace:** JWT-protected authentication & Supabase Social Login (Google).
 
 ---
 

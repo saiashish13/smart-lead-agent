@@ -22,7 +22,7 @@ const routes = [
     {
         label: "Dashboard",
         icon: LayoutGrid,
-        href: "/",
+        href: "/dashboard",
     },
     {
         label: "Discovery",
@@ -48,7 +48,7 @@ export function Navbar() {
     const handleLogout = () => {
         localStorage.removeItem("token")
         localStorage.removeItem("user")
-        router.push("/auth/signin")
+        router.push("/auth")
     }
 
     useEffect(() => {

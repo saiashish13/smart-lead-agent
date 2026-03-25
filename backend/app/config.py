@@ -9,6 +9,11 @@ class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "default-secret-key")
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "default-jwt-secret-key")
     
+    # Google OAuth
+    GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+    GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+    FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+    
     # Database Configuration
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///leads_v2.db")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
