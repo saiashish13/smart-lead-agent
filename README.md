@@ -1,48 +1,159 @@
-# 🚀 Smart Lead Agent
+<div align="center">
 
-[![Next.js](https://img.shields.io/badge/Next.js-15%2B-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![Flask](https://img.shields.io/badge/Flask-3.0%2B-000000?style=for-the-badge&logo=flask)](https://flask.palletsprojects.com/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0%2B-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+# 🤖 Smart Lead Agent
+
+### _Automate Your Entire Lead Generation Pipeline with Multi-Agent AI_
+
+[![Next.js](https://img.shields.io/badge/Next.js_15-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![Flask](https://img.shields.io/badge/Flask_3.0-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+[![LangChain](https://img.shields.io/badge/LangChain-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white)](https://www.langchain.com/)
+[![Groq](https://img.shields.io/badge/Groq_LLaMA_3.1-FF6B35?style=for-the-badge)](https://groq.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-An AI-powered, full-stack lead generation and outreach platform. **Smart Lead Agent** automates the process of discovering, enriching, and contacting potential leads using cutting-edge LLMs and background processing.
+> **Smart Lead Agent** is a production-ready, AI-native platform that replaces manual lead generation with a coordinated team of AI agents — discovering, enriching, verifying, and reaching out to leads at scale, automatically.
+
+[🚀 Live Demo](#) · [📖 Docs](#setup--installation) · [🐛 Report Bug](https://github.com/saiashish13/smart-lead-agent/issues) · [✨ Request Feature](https://github.com/saiashish13/smart-lead-agent/issues)
+
+</div>
+
+---
+
+## 📌 Overview
+
+Most sales teams spend **70%+ of their time** on manual prospecting — sifting through LinkedIn, cold-emailing lists, and updating spreadsheets. Smart Lead Agent eliminates this entirely.
+
+At its core, it is a **multi-agent AI system** where specialized agents collaborate in a pipeline: one discovers companies matching your Ideal Customer Profile, another enriches decision-maker data, a third validates and deduplicates the leads, and a final agent composes and sends hyper-personalized outreach emails — all running asynchronously in the background.
+
+---
+
+## 🚨 The Problem
+
+| Pain Point | Reality |
+|---|---|
+| ⏱️ **Time Drain** | Sales reps spend hours manually researching prospects |
+| 📉 **Data Quality** | Lead databases go stale fast — 30% decay annually |
+| 🤖 **Generic Outreach** | Templated emails get ignored; personalization doesn't scale |
+| 🔁 **No Automation** | Every step requires human intervention |
+
+---
+
+## ✅ The Solution
+
+Smart Lead Agent introduces a **fully autonomous AI pipeline** that handles the entire top-of-funnel sales motion:
+
+- 🔍 **Discover** companies matching your exact ICP criteria
+- 🧩 **Enrich** every lead with decision-maker contacts and company intelligence
+- ✅ **Verify** data accuracy and remove duplicates before they pollute your CRM
+- ✉️ **Outreach** with AI-composed, deeply personalized emails at scale
+
+---
+
+## 🧠 Multi-Agent Architecture
+
+> This is the core differentiator. Rather than a monolithic AI, each step is owned by a **specialized autonomous agent**.
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│                    SMART LEAD AGENT PIPELINE                     │
+│                                                                  │
+│  ┌─────────────┐    ┌──────────────┐    ┌──────────────────┐    │
+│  │  🔍 Research │───▶│ 🧩 Enrichment│───▶│ ✅ Verification  │    │
+│  │    Agent     │    │    Agent     │    │     Agent        │    │
+│  │             │    │              │    │                  │    │
+│  │ Finds ICP-  │    │ Deep-dives   │    │ Deduplicates &   │    │
+│  │ matched     │    │ into roles,  │    │ validates all    │    │
+│  │ companies   │    │ contacts &   │    │ fields before    │    │
+│  │ via Tavily  │    │ company info │    │ passing forward  │    │
+│  └─────────────┘    └──────────────┘    └──────────────────┘    │
+│                                                  │               │
+│                                                  ▼               │
+│                                        ┌──────────────────┐     │
+│                                        │ ✉️ Outreach Agent │     │
+│                                        │                  │     │
+│                                        │ Generates & sends│     │
+│                                        │ personalized AI  │     │
+│                                        │ emails via Groq  │     │
+│                                        └──────────────────┘     │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+| Agent | Responsibility | Tools Used |
+|---|---|---|
+| 🔍 **Research Agent** | Find companies matching ICP criteria | Tavily API, LangChain |
+| 🧩 **Enrichment Agent** | Pull decision-maker contacts & company data | Groq LLaMA 3.1, LangChain |
+| ✅ **Verification Agent** | Deduplicate, validate, and clean lead data | Custom logic + LLM |
+| ✉️ **Outreach Agent** | Compose & send personalized cold emails | Groq, Flask-Mail |
+
+---
+
+## ⚡ System Workflow
+
+```
+User Inputs ICP (Niche, Role, Geography)
+         │
+         ▼
+[Research Agent] ──── Tavily Web Search ────▶ Raw Company List
+         │
+         ▼
+[Enrichment Agent] ── Groq + LangChain ─────▶ Enriched Lead Data
+         │
+         ▼
+[Verification Agent] ─ Rule Engine + LLM ───▶ Clean, Deduped Leads
+         │
+         ▼
+[Outreach Agent] ──── Groq Email Gen ───────▶ Personalized Emails Sent
+         │
+         ▼
+Real-time Dashboard ←─ Celery + Redis ───────▶ Async Job Updates
+```
+
+---
+
+## 🌟 Key Features
+
+| Feature | Description |
+|---|---|
+| 🔍 **AI Lead Discovery** | Autonomous research using Tavily to surface ICP-matched companies |
+| 🧩 **Deep Lead Enrichment** | LLM-powered extraction of roles, contacts, and company intelligence |
+| ✅ **Data Verification** | Automated deduplication and validation before storage |
+| ✉️ **Personalized Outreach** | AI-generated email copy tailored to each lead, sent automatically |
+| 📊 **Real-time Dashboard** | Live pipeline visibility — track discovery, enrichment, and email status |
+| ⚡ **Background Processing** | Celery + Redis task queue for fully non-blocking operations |
+| 🔒 **Secure Auth** | JWT sessions + Google OAuth via Supabase |
+| 📁 **Lead Management** | View, filter, export, and manage all leads in one place |
 
 ---
 
 ## 🏗️ Tech Stack
 
 ### Frontend
-- **Framework:** Next.js 15 (App Router)
-- **UI Library:** React 19, Radix UI
-- **Styling:** Tailwind CSS 4.0
-- **Animations:** Framer Motion
-- **State Management:** TanStack Query (React Query)
-- **Icons:** Lucide React
+| Technology | Purpose |
+|---|---|
+| Next.js 15 (App Router) | Core framework with server components |
+| React 19 | UI rendering |
+| Tailwind CSS 4 | Styling system |
+| Radix UI | Accessible component primitives |
+| Framer Motion | Animations & transitions |
+| TanStack Query | Server state management & caching |
+| Lucide React | Icon system |
 
 ### Backend
-- **Framework:** Flask
-- **ORM:** Flask-SQLAlchemy (PostgreSQL/SQLite)
-- **Task Queue:** Celery & Redis
-- **Authentication:** Flask-JWT-Extended
-- **Email:** Flask-Mail
+| Technology | Purpose |
+|---|---|
+| Flask | REST API framework |
+| Flask-SQLAlchemy | ORM & database layer |
+| Celery + Redis | Async background task processing |
+| Flask-JWT-Extended | JWT-based authentication |
+| Flask-Mail | Email delivery |
 
 ### AI & Infrastructure
-- **LLMs:** Groq (Llama 3.1), OpenAI
-- **Search Tool:** Tavily API
-- **Auth Service:** Supabase (Social Login)
-- **Workflow:** LangChain
-- **Environment:** Python Dotenv
-
----
-
-## 🚀 Key Features
-
-- **🔍 Intelligent Discovery:** Automatically find leads based on custom criteria using AI-driven search.
-- **💎 Lead Enrichment:** Gather deep insights (LinkedIn, Company info, Roles) for every lead.
-- **✉️ Automated Outreach:** Schedule and send personalized emails directly from the dashboard.
-- **📊 Real-time Dashboard:** Monitor your lead pipeline, outreach success, and system health.
-- **⚡ Background Processing:** Hand off heavy research and mailing tasks to Celery workers.
-- **🔒 Secure Workspace:** JWT-protected authentication & Supabase Social Login (Google).
+| Technology | Purpose |
+|---|---|
+| Groq (LLaMA 3.1) | Primary LLM for generation & reasoning |
+| LangChain | Agent orchestration & tool chaining |
+| Tavily API | Real-time web search for lead discovery |
+| Supabase | Social login (Google OAuth) |
 
 ---
 
@@ -50,36 +161,39 @@ An AI-powered, full-stack lead generation and outreach platform. **Smart Lead Ag
 
 ```text
 smart-lead-agent/
-├── backend/                # Flask Backend
-│   ├── app/                # Application Core
-│   │   ├── routes/         # API Blueprints
-│   │   ├── services/       # Business Logic (Storage, AI, Mail)
-│   │   ├── agents/         # AI Agent Logic
-│   │   └── models.py       # Database Schemas
-│   ├── requirements.txt    # Python Dependencies
-│   └── run.py              # Backend Entry Point
-├── frontend/               # Next.js Frontend
-│   ├── app/                # Pages & Layouts
-│   ├── components/         # Reusable UI Components
-│   ├── lib/                # Utilities & Hooks
-│   └── package.json        # Frontend Dependencies
-├── .env                    # Environment Variables (Root)
-├── start_app.bat           # One-click Start Script
-└── README.md               # You are here!
+├── backend/
+│   ├── app/
+│   │   ├── agents/             # Research, Enrichment, Verification, Outreach Agents
+│   │   ├── routes/             # API Blueprints (auth, leads, discovery, email)
+│   │   ├── services/           # Business logic (storage, AI, mailer)
+│   │   ├── models.py           # SQLAlchemy database schemas
+│   │   └── .env                # Backend environment variables
+│   ├── requirements.txt
+│   └── run.py                  # Flask entry point
+│
+├── frontend/
+│   ├── app/                    # Next.js App Router pages & layouts
+│   ├── components/             # Reusable UI components
+│   ├── lib/                    # API clients, hooks, utilities
+│   ├── .env.local              # Frontend environment variables
+│   └── package.json
+│
+├── start_app.bat               # One-click Windows startup script
+└── README.md
 ```
 
 ---
 
-## ⚙️ Installation & Setup
+## ⚙️ Setup & Installation
 
 ### Prerequisites
 - Python 3.9+
 - Node.js 18+
-- Redis Server (for Celery)
+- Redis Server
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/smart-lead-agent.git
+git clone https://github.com/saiashish13/smart-lead-agent.git
 cd smart-lead-agent
 ```
 
@@ -87,7 +201,8 @@ cd smart-lead-agent
 ```bash
 cd backend
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+venv\Scripts\activate        # Windows
+# source venv/bin/activate   # macOS/Linux
 pip install -r requirements.txt
 ```
 
@@ -98,86 +213,145 @@ npm install
 ```
 
 ### 4. Configuration
-Create a `.env` file in the root (or copy from the backend template):
+
+#### `backend/app/.env`
 ```env
-# AI Keys
-GROQ_API_KEY=your_groq_key
-OPENAI_API_KEY=your_openai_key
-TAVILY_API_KEY=your_tavily_key
+# Groq Configuration
+GROQ_API_KEY=your_groq_api_key
+GROQ_MODEL=llama-3.1-8b-instant
 
-# Email
+# Email Configuration
 MAIL_USERNAME=your_email@gmail.com
-MAIL_PASSWORD=your_app_password
+MAIL_PASSWORD=your_gmail_app_password
 
-# Database & Security
+# CSV Storage
+CSV_FILE_PATH=leads.csv
+
+# Tavily API Key
+TAVILY_API_KEY=your_tavily_api_key
+
+# Google OAuth (Google Cloud Console)
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+FRONTEND_URL=http://localhost:3000
+
+# Secret Keys
 SECRET_KEY=your_super_secret_key
-DATABASE_URL=sqlite:///app.db
+JWT_SECRET_KEY=your_jwt_secret_key
 ```
 
----
+#### `frontend/.env.local`
+```env
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-## ▶️ Running the Application
+# App
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
 
-### Automated (Windows)
-Run the provided batch script:
+### 5. Run the Application
+
+**Windows (one-click):**
 ```bash
 ./start_app.bat
 ```
 
-### Manual
-1. **Start Redis:** `redis-server`
-2. **Start Backend:** `cd backend && python run.py`
-3. **Start Frontend:** `cd frontend && npm run dev`
-4. **Start Celery Worker:** `cd backend && celery -A app.celery worker --loglevel=info`
+**Manual:**
+```bash
+# Terminal 1 – Backend
+cd backend && python run.py
+
+# Terminal 2 – Frontend
+cd frontend && npm run dev
+
+# Terminal 3 – Celery Worker
+cd backend && celery -A app.celery worker --loglevel=info
+```
 
 ---
 
 ## 📡 API Endpoints
 
 | Category | Endpoint | Method | Description |
-| :--- | :--- | :--- | :--- |
+|---|---|---|---|
 | **Auth** | `/auth/register` | `POST` | Create a new account |
-| **Auth** | `/auth/login` | `POST` | Authenticate and get JWT |
-| **Leads** | `/leads/` | `GET` | Fetch all saved leads |
-| **Discovery** | `/discovery/` | `POST` | Trigger AI lead search |
-| **Email** | `/email/send` | `POST` | Send personalized outreach |
+| **Auth** | `/auth/login` | `POST` | Authenticate & receive JWT |
+| **Auth** | `/auth/google` | `GET` | Initiate Google OAuth flow |
+| **Leads** | `/leads/` | `GET` | Retrieve all saved leads |
+| **Leads** | `/leads/<id>` | `DELETE` | Remove a specific lead |
+| **Discovery** | `/discovery/` | `POST` | Trigger AI lead discovery pipeline |
+| **Email** | `/email/send` | `POST` | Send personalized outreach email |
 
 ---
 
-## 🎨 Screenshots
+## 📸 Screenshots
 
-### 🔑 Login & Welcome
+### 🔑 Authentication
 ![Welcome Page](frontend/public/screenshots/welcome.png)
 
-### 📊 Interactive Dashboard
+### 📊 Dashboard
 ![Dashboard](frontend/public/screenshots/dashboard.png)
 
 ### 🔍 Lead Discovery
 ![Discovery](frontend/public/screenshots/discovery.png)
 
-### 📋 Leads Management
+### 📋 Lead Management
 ![Leads](frontend/public/screenshots/leads.png)
 
-> [!TIP]
-> Use the Dashboard to track your lead conversion in real-time!
+---
+
+## 🛣️ Roadmap
+
+| Status | Enhancement |
+|---|---|
+| 🔜 | CRM integrations (HubSpot, Salesforce) |
+| 🔜 | LinkedIn profile scraping agent |
+| 🔜 | Multi-step email sequence automation |
+| 🔜 | A/B testing for outreach copy |
+| 🔜 | Lead scoring & priority ranking |
+| 🔜 | Slack / webhook notifications |
+| 🔜 | SaaS billing with usage limits |
+
+---
+
+## 💡 Why This Project Stands Out
+
+- **Multi-Agent Design** — Not a single monolithic AI call, but a coordinated pipeline of specialized agents with distinct responsibilities
+- **Production-Ready Architecture** — Async task processing, JWT auth, structured API, and modular codebase built to scale
+- **End-to-End Automation** — Covers the full top-of-funnel: discovery → enrichment → verification → outreach
+- **Modern Full-Stack** — Combines the latest Next.js App Router, React 19, Flask 3, and frontier LLMs in one cohesive system
 
 ---
 
 ## 🤝 Contributing
-Contributions are welcome! Please follow these steps:
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
+
+Contributions are welcome and appreciated!
+
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature/your-feature`
+3. Commit your changes: `git commit -m 'Add: your feature'`
+4. Push to the branch: `git push origin feature/your-feature`
 5. Open a Pull Request
 
 ---
 
 ## 📄 License
-Distributed under the MIT License. See `LICENSE` for more information.
+
+Distributed under the **MIT License**. See [`LICENSE`](./LICENSE) for details.
 
 ---
 
+<div align="center">
+
 ## 👨‍💻 Author
-**N SAIASHISH** - [@saiashish13](https://github.com/saiashish13)
-Project Link: [https://github.com/saiashish13/smart-lead-agent.git](https://github.com/saiashish13/smart-lead-agent.git)
+
+**N Sai Ashish**
+
+[![GitHub](https://img.shields.io/badge/GitHub-saiashish13-181717?style=for-the-badge&logo=github)](https://github.com/saiashish13)
+
+_Built with precision, powered by AI._
+
+⭐ **If this project helped you, please consider giving it a star!** ⭐
+
+</div>
