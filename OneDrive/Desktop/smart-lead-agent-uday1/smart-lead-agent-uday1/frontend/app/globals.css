@@ -1,0 +1,209 @@
+@import "tailwindcss";
+
+@theme {
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-gradient-x: gradient-x 3s ease infinite;
+
+  @keyframes gradient-x {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  @keyframes accordion-down {
+    from { height: 0 }
+    to { height: var(--radix-accordion-content-height) }
+  }
+
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height) }
+    to { height: 0 }
+  }
+}
+
+:root {
+  /* Hyper-Premium Deep Indigo/Navy Theme */
+  --background: 226 50% 4%; /* #050A14 - Pitch midnight indigo */
+  --foreground: 0 0% 100%; /* Pure bright white */
+  
+  --card: 226 40% 7%;
+  --card-foreground: 0 0% 100%;
+  
+  --popover: 226 40% 7%;
+  --popover-foreground: 0 0% 100%;
+  
+  --primary: 217.2 91.2% 59.8%; /* Electric Blue */
+  --primary-foreground: 222 47% 11.2%;
+  
+  --secondary: 226 30% 12%;
+  --secondary-foreground: 0 0% 100%;
+  
+  --muted: 226 30% 12%;
+  --muted-foreground: 215 20% 75%; /* Very light soft silver for high legibility */
+  
+  --accent: 226 35% 15%;
+  --accent-foreground: 0 0% 100%;
+  
+  --destructive: 0 70% 50%;
+  --destructive-foreground: 0 0% 100%;
+  
+  --border: 226 30% 18%;
+  --input: 226 30% 18%;
+  --ring: 217.2 91.2% 59.8%;
+  
+  --radius: 1.25rem;
+}
+
+.dark {
+  /* Identical enforcing to prevent any light flash */
+  --background: 226 50% 4%;
+  --foreground: 0 0% 100%;
+  --card: 226 40% 7%;
+  --card-foreground: 0 0% 100%;
+  --popover: 226 40% 7%;
+  --popover-foreground: 0 0% 100%;
+  --primary: 217.2 91.2% 59.8%;
+  --primary-foreground: 222 47% 11.2%;
+  --secondary: 226 30% 12%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 226 30% 12%;
+  --muted-foreground: 215 20% 75%;
+  --accent: 226 35% 15%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 70% 50%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 226 30% 18%;
+  --input: 226 30% 18%;
+  --ring: 217.2 91.2% 59.8%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary/30;
+  }
+}
+
+/* 
+  HYPER-PREMIUM GLASS PANELS
+  Features:
+  - Deep rich indigo translucency
+  - Soft inner light lip (inset box-shadow)
+  - 1px gradient border via nested layers or direct linear-gradient
+*/
+.glass-card {
+  position: relative;
+  background: rgba(10, 15, 30, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  @media (min-width: 768px) {
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+  }
+  
+  /* Gradient border using standard transparent border + background-clip */
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  
+  /* Compound shadow: outer drop shadow + soft inner white top-lighting */
+  box-shadow: 
+    0 10px 40px -10px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Force physical tap behavior exclusively on touch and click */
+.glass-card:active {
+  transform: translateY(-1px) scale(0.995);
+  box-shadow: 
+    0 5px 20px -10px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1); /* Faster snap response for physical taps */
+}
+
+/* Outer Gradient Border Wrapper effect via pseudo-element */
+.glass-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px; /* border thickness */
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0.05) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  transition: all 0.4s ease;
+}
+
+/* Elegantly lift and blast an electric glow out from underneath on hover */
+.glass-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  background: rgba(15, 22, 40, 0.5);
+  box-shadow: 
+    0 20px 40px -10px rgba(0, 0, 0, 0.7),
+    0 0 40px -10px rgba(59, 130, 246, 0.3), /* Electric blue ambient emit */
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+.glass-card:hover::before {
+  background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(59,130,246,0.2) 50%, rgba(255,255,255,0.1) 100%);
+}
+
+/* 
+  NEW TEXT & VALUE UTILITIES
+  For perfectly readable, premium glowing values 
+*/
+.text-glow {
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.2);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.primary-glow {
+  text-shadow: 0 0 24px rgba(59, 130, 246, 0.6);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

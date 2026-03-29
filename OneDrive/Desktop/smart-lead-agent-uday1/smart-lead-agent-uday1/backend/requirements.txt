@@ -1,0 +1,17 @@
+flask
+flask-sqlalchemy
+flask-migrate
+python-dotenv
+openai
+celery
+redis
+flask-mail
+
+flask-cors
+flask-cors
+tavily-python
+langchain-groq
+PyJWT
+bcrypt
+google-auth
+requests
