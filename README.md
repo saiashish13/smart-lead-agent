@@ -53,29 +53,23 @@ Smart Lead Agent introduces a **fully autonomous AI pipeline** that handles the 
 
 > This is the core differentiator. Rather than a monolithic AI, each step is owned by a **specialized autonomous agent**.
 
-```
-┌──────────────────────────────────────────────────────────────────┐
-│                    SMART LEAD AGENT PIPELINE                     │
-│                                                                  │
-│  ┌─────────────┐    ┌──────────────┐    ┌──────────────────┐    │
-│  │  🔍 Research │───▶│ 🧩 Enrichment│───▶│ ✅ Verification  │    │
-│  │    Agent     │    │    Agent     │    │     Agent        │    │
-│  │             │    │              │    │                  │    │
-│  │ Finds ICP-  │    │ Deep-dives   │    │ Deduplicates &   │    │
-│  │ matched     │    │ into roles,  │    │ validates all    │    │
-│  │ companies   │    │ contacts &   │    │ fields before    │    │
-│  │ via Tavily  │    │ company info │    │ passing forward  │    │
-│  └─────────────┘    └──────────────┘    └──────────────────┘    │
-│                                                  │               │
-│                                                  ▼               │
-│                                        ┌──────────────────┐     │
-│                                        │ ✉️ Outreach Agent │     │
-│                                        │                  │     │
-│                                        │ Generates & sends│     │
-│                                        │ personalized AI  │     │
-│                                        │ emails via Groq  │     │
-│                                        └──────────────────┘     │
-└──────────────────────────────────────────────────────────────────┘
+```mermaid
+graph LR
+    subgraph Pipeline [<b>SMART LEAD AGENT PIPELINE</b>]
+        direction LR
+        A["<b>🔍 Research Agent</b><br/><small>Finds ICP-matched<br/>companies via Tavily</small>"]
+        B["<b>🧩 Enrichment Agent</b><br/><small>Deep-dives into roles,<br/>contacts & company info</small>"]
+        C["<b>✅ Verification Agent</b><br/><small>Deduplicates & validates<br/>all fields before passing</small>"]
+        D["<b>✉️ Outreach Agent</b><br/><small>Generates & sends<br/>personalized AI emails</small>"]
+
+        A --> B --> C --> D
+    end
+
+    style Pipeline fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style A fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style B fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    style C fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+    style D fill:#fff3e0,stroke:#e65100,stroke-width:2px
 ```
 
 | Agent | Responsibility | Tools Used |
