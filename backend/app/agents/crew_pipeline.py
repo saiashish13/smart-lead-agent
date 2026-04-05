@@ -3,17 +3,21 @@ import json
 from textwrap import dedent
 from flask import current_app
 
-def create_crew_pipeline(product_name: str, target_person: str, industry: str, location: str):
+def create_crew_pipeline(product_name: str, target_person: str, industry: str, location: str, leads_limit: int = 10):
     """
     Constructs and runs a Langchain Pipeline representing our 3 Agents.
     Since Python 3.14 is incompatible with CrewAI, we orchestrate the LLM directly.
     """
     from langchain_groq import ChatGroq
     from langchain_core.prompts import ChatPromptTemplate
+    import requests
     
     # Needs tavily instead of serper natively
     from tavily import TavilyClient
     tavily_client = TavilyClient(api_key=os.environ.get("TAVILY_API_KEY"))
+
+    tavily_limit = leads_limit // 2
+    github_limit = leads_limit - tavily_limit
 
     llm = ChatGroq(
         api_key=os.environ.get("GROQ_API_KEY"),
@@ -25,7 +29,7 @@ def create_crew_pipeline(product_name: str, target_person: str, industry: str, l
     print("--- [Agent 1] Research Agent ---")
     search_res = tavily_client.search(
         query=f'{target_person} "{product_name}" {industry} {location} site:linkedin.com/in',
-        max_results=10
+        max_results=max(1, tavily_limit)
     )
     
     research_prompt = ChatPromptTemplate.from_template(
@@ -51,6 +55,34 @@ def create_crew_pipeline(product_name: str, target_person: str, industry: str, l
     except:
         leads = []
         
+    # GitHub Lead Search
+    github_token = os.environ.get("GITHUB_TOKEN")
+    if github_token and github_limit > 0:
+        print(f"--- [GitHub Search] Fetching {github_limit} leads ---")
+        headers = {"Authorization": f"token {github_token}"}
+        gh_query = target_person
+        if location:
+            gh_query += f" location:{location}"
+        
+        try:
+            gh_res = requests.get(
+                f"https://api.github.com/search/users?q={gh_query}&per_page={github_limit}",
+                headers=headers
+            )
+            if gh_res.status_code == 200:
+                gh_data = gh_res.json()
+                for item in gh_data.get("items", []):
+                    leads.append({
+                        "name": item.get("login"),
+                        "company": "GitHub User",
+                        "title": target_person,
+                        "company_domain": "github.com",
+                        "linkedin": item.get("html_url"),
+                        "website": item.get("blog") or item.get("html_url")
+                    })
+        except Exception as e:
+            print(f"GitHub Search Error: {e}")
+
     if not leads:
         return []
 

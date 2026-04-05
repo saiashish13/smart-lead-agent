@@ -24,10 +24,13 @@ def search_leads():
 
         query               = data.get("query", "software developers")
         product_name        = data.get("product_name", "Our Software Product")
+        link                = data.get("link")
+        description         = data.get("description")
         industry            = data.get("industry", "Technology")
         location            = data.get("location", "United States")
+        leads_limit         = int(data.get("leads_limit", 10))
 
-        print(f"[route] Triggering pipeline for: product={product_name!r} target={query!r} industry={industry!r} location={location!r}")
+        print(f"[route] Triggering pipeline for: product={product_name!r} target={query!r} industry={industry!r} location={location!r} limit={leads_limit}")
 
         from app.agents.crew_pipeline import create_crew_pipeline
         from app.services.storage_service import save_leads
@@ -35,7 +38,8 @@ def search_leads():
             product_name=product_name,
             target_person=query,
             industry=industry,
-            location=location
+            location=location,
+            leads_limit=leads_limit
         )
 
         if not raw_leads:
@@ -47,7 +51,7 @@ def search_leads():
             }), 200
 
         # Save to DB
-        save_leads(raw_leads, product_name=product_name)
+        save_leads(raw_leads, product_name=product_name, link=link, description=description)
 
         return jsonify({
             "success": True,

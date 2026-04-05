@@ -25,6 +25,8 @@ def send_email_to_lead(lead_id):
             'email': lead.email,
             'industry': lead.industry,
             'product_name': lead.product_name,
+            'link': lead.link,
+            'description': lead.description,
             'product_benefit': "Save time and automate your workflow",
             'url': lead.linkedin or lead.source_url or ""
         }

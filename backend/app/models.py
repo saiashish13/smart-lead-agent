@@ -37,6 +37,8 @@ class Lead(db.Model):
     # Keep a few legacy fields to avoid breaking the frontend entirely (or we can migrate them)
     industry = db.Column(db.String(100))
     product_name = db.Column(db.String(120))
+    link = db.Column(db.String(255))
+    description = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def to_dict(self):
@@ -51,6 +53,8 @@ class Lead(db.Model):
             'status': self.status,
             'industry': self.industry,
             'product_name': self.product_name,
+            'link': self.link,
+            'description': self.description,
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
 

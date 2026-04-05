@@ -11,8 +11,11 @@ import { Search, Target } from "lucide-react"
 export default function DiscoveryPage() {
     const [query, setQuery] = useState("")
     const [productName, setProductName] = useState("")
+    const [link, setLink] = useState("")
+    const [description, setDescription] = useState("")
     const [industry, setIndustry] = useState("")
     const [location, setLocation] = useState("")
+    const [leadsLimit, setLeadsLimit] = useState("10")
     const queryClient = useQueryClient()
 
     const { mutate: searchLeads, isPending, data: searchResults } = useMutation({
@@ -20,8 +23,11 @@ export default function DiscoveryPage() {
             const res = await api.post("/campaign/search", {
                 query,
                 product_name: productName,
+                link: link.trim() || undefined,
+                description: description.trim() || undefined,
                 industry: industry.trim() || undefined,
                 location: location.trim() || undefined,
+                leads_limit: parseInt(leadsLimit) || 10,
             })
             return res.data
         },
@@ -75,7 +81,29 @@ export default function DiscoveryPage() {
                             </div>
                         </div>
 
-                        {/* Row 2: Industry + Location */}
+                        {/* Row 2: Link + Description */}
+                        <div className="flex gap-4">
+                            <div className="flex-1 space-y-2">
+                                <label className="text-sm font-medium text-muted-foreground">Product Link</label>
+                                <Input
+                                    placeholder="e.g. https://your-product.com"
+                                    className="bg-background border-border focus-visible:ring-primary text-foreground placeholder:text-muted-foreground/50"
+                                    value={link}
+                                    onChange={(e) => setLink(e.target.value)}
+                                />
+                            </div>
+                            <div className="flex-1 space-y-2">
+                                <label className="text-sm font-medium text-muted-foreground">Product Description</label>
+                                <Input
+                                    placeholder="e.g. An AI-powered CRM"
+                                    className="bg-background border-border focus-visible:ring-primary text-foreground placeholder:text-muted-foreground/50"
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Row 3: Industry + Location */}
                         <div className="flex gap-4">
                             <div className="flex-1 space-y-2">
                                 <label className="text-sm font-medium text-muted-foreground flex items-center gap-1.5">
@@ -100,6 +128,24 @@ export default function DiscoveryPage() {
                                     className="bg-background border-border focus-visible:ring-primary text-foreground placeholder:text-muted-foreground/50"
                                     value={location}
                                     onChange={(e) => setLocation(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Row 4: Leads Limit */}
+                        <div className="flex gap-4">
+                            <div className="flex-1 space-y-2">
+                                <label className="text-sm font-medium text-muted-foreground flex items-center gap-1.5">
+                                    Number of Leads
+                                </label>
+                                <Input
+                                    type="number"
+                                    min="1"
+                                    max="100"
+                                    placeholder="e.g. 10"
+                                    className="bg-background border-border focus-visible:ring-primary text-foreground placeholder:text-muted-foreground/50"
+                                    value={leadsLimit}
+                                    onChange={(e) => setLeadsLimit(e.target.value)}
                                 />
                             </div>
                         </div>

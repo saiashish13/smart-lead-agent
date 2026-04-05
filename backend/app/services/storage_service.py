@@ -9,7 +9,7 @@ def load_leads():
         print(f"Error loading leads from DB: {e}")
         return []
 
-def save_leads(leads_data, product_name=None):
+def save_leads(leads_data, product_name=None, link=None, description=None):
     try:
         count = 0
         for data in leads_data:
@@ -42,7 +42,9 @@ def save_leads(leads_data, product_name=None):
                 source_url=data.get('source_url'),
                 status=data.get('status', 'New'),
                 industry=data.get('industry'),
-                product_name=product_name
+                product_name=product_name,
+                link=link,
+                description=description
             )
             db.session.add(new_lead)
             count += 1
@@ -73,7 +75,9 @@ def add_lead(lead_data):
                 company_domain=lead_data.get('company_domain'),
                 source_url=lead_data.get('source_url'),
                 status=lead_data.get('status', 'New'),
-                industry=lead_data.get('industry')
+                industry=lead_data.get('industry'),
+                link=lead_data.get('link'),
+                description=lead_data.get('description')
             )
             db.session.add(new_lead)
         
