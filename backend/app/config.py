@@ -35,3 +35,6 @@ class Config:
     # Default Product Info (Can be overridden dynamically)
     PRODUCT_NAME = "Lead Agent"
     PRODUCT_BENEFIT = "automate lead research in seconds"
+    
+    CELERY_BROKER_URL = "redis://redis:6379/0"
+    CELERY_RESULT_BACKEND = "redis://redis:6379/0"
