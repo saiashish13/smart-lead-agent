@@ -2,27 +2,28 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone') {
+
+        stage('Checkout Code') {
             steps {
-                echo 'Cloning repository...'
+                git branch: 'main', url: 'YOUR_GITHUB_REPO_URL'
             }
         }
 
-        stage('Build') {
+        stage('Stop Old Containers') {
             steps {
-                echo 'Building project...'
+                sh 'docker compose down || true'
             }
         }
 
-        stage('Test') {
+        stage('Build & Run Containers') {
             steps {
-                echo 'Running tests...'
+                sh 'docker compose up -d --build'
             }
         }
 
-        stage('Deploy') {
+        stage('Check Running') {
             steps {
-                echo 'Deploying application...'
+                sh 'docker ps'
             }
         }
     }
