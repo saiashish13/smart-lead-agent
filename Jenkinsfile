@@ -33,8 +33,8 @@ stages {
         steps {
             echo 'Tagging images...'
             sh '''
-            docker tag smart-lead-pipeline_frontend:latest pabbojuuday26/frontend:latest
-            docker tag smart-lead-pipeline_backend:latest pabbojuuday26/backend:latest
+            docker tag smart-lead-pipeline-frontend:latest pabbojuuday26/frontend:latest
+            docker tag smart-lead-pipeline-backend:latest pabbojuuday26/backend:latest
             '''
         }
     }
