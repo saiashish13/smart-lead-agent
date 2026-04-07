@@ -1,3 +1,7 @@
+pipeline {
+agent any
+
+
 environment {
     DOCKER_USER = 'pabbojuuday26'
 }
@@ -83,4 +87,7 @@ post {
     failure {
         echo 'FAILED: Check logs above'
     }
+}
+
+
 }
