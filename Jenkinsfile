@@ -11,13 +11,13 @@ pipeline {
 
         stage('Build Images') {
             steps {
-                sh 'docker compose build'
+                sh 'docker-compose build'
             }
         }
 
         stage('Run Containers') {
             steps {
-                sh 'docker compose up -d'
+                sh 'docker-compose up -d'
             }
         }
 
@@ -29,7 +29,7 @@ pipeline {
 
         stage('Show Logs') {
             steps {
-                sh 'docker compose logs --tail=50'
+                sh 'docker-compose logs --tail=50'
             }
         }
     }
